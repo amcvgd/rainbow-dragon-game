@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace RainbowDragon
 {
-    class Sprite
+    public class Sprite
     {
         protected Vector2 position = new Vector2(300, 150);     //The position of the sprite
         protected int width, height;                            //The width and height of the sprite

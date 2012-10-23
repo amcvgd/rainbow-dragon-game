@@ -15,7 +15,7 @@ namespace RainbowDragon
 {
     //Represents a Link inside of a Linked List
     //This class holds a position and a rotation, and a link to the next Link in the list
-    class Link
+   public class Link
     {
         //Data
         public Vector2 position;
@@ -35,7 +35,7 @@ namespace RainbowDragon
     
     //A FIFO Queue
     //This class is used to keep track of the moves of each follow sprite, for the following sprite to be able to follow at a delay
-    class Queue
+   public class Queue
     {
         //First and Last Link in the queue
         public Link first, last;
