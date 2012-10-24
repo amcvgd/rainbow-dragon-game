@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using RainbowDragon.HelperClasses;
+using RainbowDragon.Core.Screens;
 
 namespace RainbowDragon
 {
@@ -18,6 +20,16 @@ namespace RainbowDragon
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        int currentGameState;
+
+        //Screens
+        StartScreen startScreen;
+        InGameScreen inGameScreen;
+        GameoverScreen gameOverScreen;
+        public void setGameState(int newState)
+        {
+            currentGameState = newState;
+        }
 
         public Game1()
         {
@@ -34,7 +46,8 @@ namespace RainbowDragon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            setGameState(Constants.GAME_STATE_START);
+            inGameScreen = new InGameScreen(this);
             base.Initialize();
         }
 
@@ -66,11 +79,26 @@ namespace RainbowDragon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
+
+            if (currentGameState == Constants.GAME_STATE_START)
+            {
+                startScreen.Update(gameTime);
+            }
+            else if (currentGameState == Constants.GAME_STATE_INGAME)
+            {
+                inGameScreen.Update(gameTime);
+            }
+            else if (currentGameState == Constants.GAME_STATE_OVER)
+            {
+                gameOverScreen.Update(gameTime);
+            }
+
 
             base.Update(gameTime);
         }
@@ -84,6 +112,19 @@ namespace RainbowDragon
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            if (currentGameState == Constants.GAME_STATE_START)
+            {
+                startScreen.Draw(spriteBatch);
+            }
+            else if (currentGameState == Constants.GAME_STATE_INGAME)
+            {
+                inGameScreen.Draw(spriteBatch);
+            }
+            else if (currentGameState == Constants.GAME_STATE_OVER)
+            {
+                gameOverScreen.Draw(spriteBatch);
+            }
 
             base.Draw(gameTime);
         }
