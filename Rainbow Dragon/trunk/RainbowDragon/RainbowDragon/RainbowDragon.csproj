@@ -110,6 +110,8 @@
     <Compile Include="Core\Enemies\Arrow.cs" />
     <Compile Include="Core\Enemies\EnemyManager.cs" />
     <Compile Include="Core\Levels\LevelManager.cs" />
+    <Compile Include="Core\ParticleEngine\Particle.cs" />
+    <Compile Include="Core\ParticleEngine\ParticleEngine.cs" />
     <Compile Include="Core\Pickups\PickupsManager.cs" />
     <Compile Include="Core\Pickups\Sun.cs" />
     <Compile Include="Core\Player\Dragon.cs" />
