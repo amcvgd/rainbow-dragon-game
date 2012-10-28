@@ -1,0 +1,14 @@
+<levels>
+	<level number="0">
+		<arrows>
+			<arrow >
+				<type>normal</type>
+				<quantity>5</quantity>
+			</arrow>
+			
+		</arrows>
+		<suns>10</suns>
+		<time>5</time>
+	</level> 
+
+</levels>

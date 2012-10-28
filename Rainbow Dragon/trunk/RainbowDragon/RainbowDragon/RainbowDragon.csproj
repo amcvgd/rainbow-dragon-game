@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Core\Enemies\Arrow.cs" />
     <Compile Include="Core\Enemies\EnemyManager.cs" />
+    <Compile Include="Core\Levels\Level.cs" />
     <Compile Include="Core\Levels\LevelManager.cs" />
     <Compile Include="Core\ParticleEngine\Particle.cs" />
     <Compile Include="Core\ParticleEngine\ParticleEngine.cs" />
