@@ -1,14 +1,25 @@
 <levels>
-	<level number="0">
-		<arrows>
-			<arrow >
-				<type>normal</type>
-				<quantity>5</quantity>
-			</arrow>
-			
-		</arrows>
-		<suns>10</suns>
-		<time>5</time>
-	</level> 
+  <level>
+    <number>1</number>
+    <arrows>
+      <arrow >
+        <type>normal</type>
+        <xposition>2</xposition>
+        <yposition>1</yposition>
+        <direction>270</direction>
+      </arrow>
+
+    </arrows>
+    <suns>
+      <sun>
+        <size>1</size>
+        <type>normal</type>
+        <xposition>1</xposition>
+        <yposition>3</yposition>
+      </sun>
+
+    </suns>
+    <time>5</time>
+  </level>
 
 </levels>
