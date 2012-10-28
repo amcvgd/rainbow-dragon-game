@@ -23,7 +23,7 @@ namespace RainbowDragon
         int currentGameState;
 
         //Screens
-        StartScreen startScreen;
+        StartScreen startScreen; 
         InGameScreen inGameScreen;
         GameoverScreen gameOverScreen;
         public void setGameState(int newState)
@@ -48,6 +48,7 @@ namespace RainbowDragon
             // TODO: Add your initialization logic here
             setGameState(Constants.GAME_STATE_START);
             inGameScreen = new InGameScreen(this);
+            
             base.Initialize();
         }
 
