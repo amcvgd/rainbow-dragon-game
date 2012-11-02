@@ -6,105 +6,46 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using RainbowDragon.HelperClasses;
+using RainbowDragon.Core.Sprite;
 
 namespace RainbowDragon.Core.Player
 {
     class Dragon
     {
-        //This is my version of the dragon. It doesn't mean we have to use it.
+        List<DragonPart> dragon;
 
-        List<DragonPart> dragonBody;
-        LinkedList<DragonPart> dragonBody1;
-        DragonHead dragonHead;
-        int bodySize; //how many body parts it currently has
-        bool isMoving;
-        //enum Directions {left, up, right, down, none};
-        int currentDirection;
+        Texture2D dragonHead, dragonBodyPart, dragonTail;
 
-        Dictionary<Vector2, int> dragonPath; 
-        public Dragon()
+        int bodySize;
+
+        public Dragon(int bodySize)
         {
+            this.bodySize = bodySize;
+            
+            dragon.Add(new DragonHead(dragonHead, Vector2.Zero));                           //Head 
 
-        }
+            for (int i = 0; i < bodySize; i++)
+            {
+                dragon.Add(new DragonPart(dragon[i], dragonBodyPart, Vector2.Zero));        //Body Parts
+            }
 
-        public void Initialize(Vector2 startingPos)
-        {
-            isMoving = false;
-            currentDirection = Constants.NO_DIRECTION;
-            bodySize = 1;
-            dragonBody = new List<DragonPart>();
-            dragonBody.Add(new DragonPart(bodySize)); //this adds the head
-            bodySize++;
-            dragonBody.Add(new DragonPart(bodySize)); //this will be the tail for now
-            dragonBody[bodySize].SetFather(dragonBody[bodySize - 1]);
-            //dragonBody[dragonBody.Count - 1].CheckCollision();
-            dragonBody1 = new LinkedList<DragonPart>();
-            dragonBody1.AddFirst(new DragonPart(0));
-            dragonBody1.AddLast(new DragonPart(1));
-            dragonHead = new DragonHead(0);
-            //dragonBody1.AddAfter(dragonBody1.First, new DragonPart(2));
-
-        }
-        //here it is overriden because the dragon might need a more complicated version of the spritebatch.draw() method.
-        public void Draw(SpriteBatch spriteBatch)
-        {
-
+            dragon.Add(new DragonPart(dragon[bodySize], dragonBodyPart, Vector2.Zero));     //Tail
         }
 
         public void Update(GameTime gameTime)
         {
-            KeyboardState keyState = Keyboard.GetState();
-            if(keyState.IsKeyDown(Keys.Up))
+            foreach (DragonPart part in dragon)
             {
-                if(currentDirection != Constants.DOWN)
-                    currentDirection = Constants.UP;
-
-
+                part.Update(gameTime);
             }
-            else if(keyState.IsKeyDown(Keys.Down))
-            {
-                if (currentDirection != Constants.UP)
-                    currentDirection = Constants.DOWN;
-
-
-            }
-            else if(keyState.IsKeyDown(Keys.Left))
-            {
-                if (currentDirection != Constants.RIGHT)
-                    currentDirection = Constants.LEFT;
-
-
-            }
-            else if(keyState.IsKeyDown(Keys.Right))
-            {
-                if (currentDirection != Constants.LEFT)
-                    currentDirection = Constants.RIGHT;
-
-
-            }
-
-            if (dragonHead.getDirection() != currentDirection)
-            {
-                dragonHead.ChangeDirection(currentDirection);
-            }
-
-            Vector2 prevPos = dragonBody[0].GetPosition();
-
-            dragonBody[0].Update(gameTime);
-            dragonBody1.First.Value.Update(gameTime);
-            
-
-            foreach (DragonPart d in dragonBody)
-            {
-                /*Vector2 tempPos;
-                tempPos = d.GetPosition();
-                d.SetNewPosition(prevPos);*/
-                d.Update(gameTime);
-
-            }
-
-
         }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (DragonPart part in dragon)
+            {
+                part.Draw(spriteBatch);
+            }
+        }
     }
 }
