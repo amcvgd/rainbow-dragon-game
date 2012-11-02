@@ -3,70 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using RainbowDragon.Core.Sprite;
 using RainbowDragon.HelperClasses;
 
 namespace RainbowDragon.Core.Player
 {
-    class DragonHead:MovingSprite
+    class DragonHead : DragonPart
     {
-        int index; //the index will determine the position of the body part relative to the head
-        DragonPart father;
-        
-        enum Directions { left, up, right, down, none };
-        int direction;
-       
-        
-        public DragonHead(int index)
-        {
-            this.index = index;
-            direction = Constants.NO_DIRECTION;
-            speed = 10;
-        }
+        public DragonHead(Texture2D texture, Vector2 position, float speed = 100, float rotation = 0)
+            : base(null, texture, position, speed, rotation) { }
 
         public override void Update(GameTime gameTime)
         {
-            if (direction == Constants.DOWN)
+            GamePadState aGamePad = GamePad.GetState(PlayerIndex.One);
+            KeyboardState aKeyboard = Keyboard.GetState();
+
+            // TODO: Add your update logic here
+            rotation += (float)(aGamePad.ThumbSticks.Left.X * 3.0f * gameTime.ElapsedGameTime.TotalSeconds);
+            if (aKeyboard.IsKeyDown(Keys.Down) || aKeyboard.IsKeyDown(Keys.Right))
             {
-                position.Y += speed;
+                rotation += (float)(1 * 3.0f * gameTime.ElapsedGameTime.TotalSeconds);
             }
-            else if (direction == Constants.UP)
+            if (aKeyboard.IsKeyDown(Keys.Up) || aKeyboard.IsKeyDown(Keys.Left))
             {
-                position.Y -= speed;
+                rotation -= (float)(1 * 3.0f * gameTime.ElapsedGameTime.TotalSeconds);
             }
-            else if (direction == Constants.LEFT)
-            {
-                position.X -= speed;
-            }
-            else if (direction == Constants.RIGHT)
-            {
-                position.X += speed;
-            }
+
+            int moveAmount = (int)(speed * gameTime.ElapsedGameTime.TotalSeconds);
+
+            position.X += (float)(moveAmount * Math.Cos(rotation));
+            position.Y += (float)(moveAmount * Math.Sin(rotation));
+
+            //Update Move List
+            moves.Push(new Move(speed, rotation));
         }
-
-        public void SetNewPosition(Vector2 newPos)
-        {
-            position = newPos;
-        }
-
-        public Vector2 GetPosition()
-        {
-            return position;
-        }
-
-        public void ChangeDirection(int  newDirection)
-        {
-
-            direction = newDirection;
-        }
-
-        public int getDirection()
-        {
-            return direction;
-        }
-        
-
-
-
     }
 }
