@@ -9,9 +9,13 @@ namespace RainbowDragon.Core.Sprite
 {
     class MovingSprite:Sprite
     {
-        protected float speed;
-        protected float rotation;
+        public float speed;
+        public float rotation;
 
+        public Rectangle Hitbox
+        {
+            get { return new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height); }
+        }
 
         public  MovingSprite(Texture2D texture, Vector2 position, float speed = 0, float rotation = 0)
             :base(texture, position)
