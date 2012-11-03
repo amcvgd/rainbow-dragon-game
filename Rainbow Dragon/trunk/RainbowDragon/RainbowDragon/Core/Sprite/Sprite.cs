@@ -9,7 +9,8 @@ namespace RainbowDragon.Core.Sprite
     class Sprite
     {
         protected Texture2D texture;
-        protected Vector2 position;
+
+        public Vector2 position;
 
         public Rectangle size;
 

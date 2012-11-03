@@ -20,7 +20,6 @@ namespace RainbowDragon.Core.Player
             GamePadState aGamePad = GamePad.GetState(PlayerIndex.One);
             KeyboardState aKeyboard = Keyboard.GetState();
 
-            // TODO: Add your update logic here
             rotation += (float)(aGamePad.ThumbSticks.Left.X * 3.0f * gameTime.ElapsedGameTime.TotalSeconds);
             if (aKeyboard.IsKeyDown(Keys.Down) || aKeyboard.IsKeyDown(Keys.Right))
             {
