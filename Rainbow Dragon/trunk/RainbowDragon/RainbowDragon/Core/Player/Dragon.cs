@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 using RainbowDragon.HelperClasses;
 using RainbowDragon.Core.Sprite;
 
@@ -36,15 +37,23 @@ namespace RainbowDragon.Core.Player
             this.bodySize = bodySize;
             dragon = new List<DragonPart>();
             rainbow = new List<FollowingSprite>();
-            
-            dragon.Add(new DragonHead(dragonHead, Vector2.Zero));                           //Head 
+        }
+
+        public void LoadContent(ContentManager contentManager)
+        {
+            dragonHead = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
+            dragonBodyPart = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
+            dragonTail = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
+            rainbowTexture = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
+
+            dragon.Add(new DragonHead(dragonHead, Vector2.Zero, 0.5f));                           //Head 
 
             for (int i = 0; i < bodySize; i++)
             {
-                dragon.Add(new DragonPart(dragon[i], dragonBodyPart, Vector2.Zero));        //Body Parts
+                dragon.Add(new DragonPart(dragon[i], dragonBodyPart, Vector2.Zero, 0.5f));        //Body Parts
             }
 
-            dragon.Add(new DragonPart(dragon[bodySize], dragonBodyPart, Vector2.Zero));     //Tail
+            dragon.Add(new DragonPart(dragon[bodySize], dragonBodyPart, Vector2.Zero, 0.5f));     //Tail
         }
 
         /// <summary>
@@ -168,7 +177,7 @@ namespace RainbowDragon.Core.Player
                 else
                     father = rainbow[rainbow.Count - 1];
 
-                rainbow.Add(new FollowingSprite(father, rainbowTexture, father.position, father.speed, father.rotation));
+                rainbow.Add(new FollowingSprite(father, rainbowTexture, father.position, 0.2f, father.speed, father.rotation));
             }
         }
 

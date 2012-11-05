@@ -17,8 +17,8 @@ namespace RainbowDragon.Core.Sprite
             get { return new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height); }
         }
 
-        public  MovingSprite(Texture2D texture, Vector2 position, float speed = 0, float rotation = 0)
-            :base(texture, position)
+        public  MovingSprite(Texture2D texture, Vector2 position, float scale = 1, float speed = 0, float rotation = 0)
+            :base(texture, position, scale)
         {
             this.speed = speed;
             this.rotation = rotation;
@@ -29,6 +29,13 @@ namespace RainbowDragon.Core.Sprite
 
         }
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height),
+                new Rectangle(0, 0, texture.Width, texture.Height), Color.White, rotation,
+                new Vector2(texture.Width / 2, texture.Height / 2), SpriteEffects.None, 0);
+        }
+        
         public bool CheckCollision()
         {
             return false;

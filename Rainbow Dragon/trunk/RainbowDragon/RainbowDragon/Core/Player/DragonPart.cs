@@ -15,8 +15,8 @@ namespace RainbowDragon.Core.Player
         DragonPart father;
         int index = 0;
 
-        public DragonPart(DragonPart father, Texture2D texture, Vector2 position, float speed = 0, float rotation = 0)
-            : base(father, texture, position, speed, rotation) 
+        public DragonPart(DragonPart father, Texture2D texture, Vector2 position, float scale = 1, float speed = 0, float rotation = 0)
+            : base(father, texture, position, scale, speed, rotation) 
         {
             this.father = father;
         }

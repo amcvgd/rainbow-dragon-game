@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using RainbowDragon.HelperClasses;
 using RainbowDragon.Core.Screens;
+using RainbowDragon.Core.Player;
 
 namespace RainbowDragon
 {
@@ -26,6 +27,7 @@ namespace RainbowDragon
         StartScreen startScreen; 
         InGameScreen inGameScreen;
         GameoverScreen gameOverScreen;
+
         public void setGameState(int newState)
         {
             currentGameState = newState;
@@ -48,6 +50,8 @@ namespace RainbowDragon
             // TODO: Add your initialization logic here
             setGameState(Constants.GAME_STATE_START);
             inGameScreen = new InGameScreen(this);
+            startScreen = new StartScreen();
+            gameOverScreen = new GameoverScreen();
             
             base.Initialize();
         }
@@ -100,7 +104,6 @@ namespace RainbowDragon
                 gameOverScreen.Update(gameTime);
             }
 
-
             base.Update(gameTime);
         }
 
@@ -114,6 +117,7 @@ namespace RainbowDragon
 
             // TODO: Add your drawing code here
 
+            spriteBatch.Begin();
             if (currentGameState == Constants.GAME_STATE_START)
             {
                 startScreen.Draw(spriteBatch);
@@ -128,6 +132,7 @@ namespace RainbowDragon
             }
 
             base.Draw(gameTime);
+            spriteBatch.End();
         }
     }
 }

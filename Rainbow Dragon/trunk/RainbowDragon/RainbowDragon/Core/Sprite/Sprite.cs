@@ -38,10 +38,11 @@ namespace RainbowDragon.Core.Sprite
             }
         }
 
-        public Sprite(Texture2D texture, Vector2 position)
+        public Sprite(Texture2D texture, Vector2 position, float scale)
         {
             this.texture = texture;
             this.position = position;
+            this.scale = scale;
             Source = new Rectangle(0, 0, (int)(texture.Width * scale), (int)(texture.Height * scale));
         }
 
