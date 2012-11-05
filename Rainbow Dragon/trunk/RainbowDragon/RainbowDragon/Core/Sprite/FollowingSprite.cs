@@ -15,8 +15,8 @@ namespace RainbowDragon.Core.Sprite
         protected MoveQueue moves;
         protected FollowingSprite father;
 
-        public FollowingSprite(FollowingSprite father, Texture2D texture, Vector2 position, float speed = 0, float rotation = 0)
-            :base(texture, position, speed, rotation)
+        public FollowingSprite(FollowingSprite father, Texture2D texture, Vector2 position, float scale = 1, float speed = 0, 
+            float rotation = 0):base(texture, position, scale, speed, rotation)
         {
             this.father = father;
             moves = new MoveQueue(10);

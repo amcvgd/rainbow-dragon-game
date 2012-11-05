@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 using RainbowDragon.Core.Player;
 
 namespace RainbowDragon.Core.Screens
@@ -13,19 +14,24 @@ namespace RainbowDragon.Core.Screens
         int [,]grid;
         int screenWidth;
         int screenHeight;
+        
+        
         Dragon mainPlayer;
+
+        ContentManager content;
+
         public InGameScreen(Game1 game1)
         {
-
+            content = game1.Content;
             screenHeight = game1.Window.ClientBounds.Height;
             screenWidth = game1.Window.ClientBounds.Width;
         }
 
         public void Initialize()
         {
-            mainPlayer = new Dragon();
+            mainPlayer = new Dragon(3);
 
-            mainPlayer.Initialize(new Vector2(screenWidth/2, screenHeight/2)); //this adds a dragon with only head and tail
+            mainPlayer.LoadContent(content); //this adds a dragon with only head and tail
         }
         public void Update(GameTime gameTime)
         {

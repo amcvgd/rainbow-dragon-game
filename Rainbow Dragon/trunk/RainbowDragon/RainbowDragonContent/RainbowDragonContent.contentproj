@@ -42,6 +42,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Dragon\Car.png">
+      <Name>Car</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Content Include="Core\levels.xml">
       <Name>levels</Name>
       <Importer>XmlImporter</Importer>
@@ -49,6 +54,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

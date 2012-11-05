@@ -12,8 +12,8 @@ namespace RainbowDragon.Core.Player
 {
     class DragonHead : DragonPart
     {
-        public DragonHead(Texture2D texture, Vector2 position, float speed = 100, float rotation = 0)
-            : base(null, texture, position, speed, rotation) { }
+        public DragonHead(Texture2D texture, Vector2 position, float scale = 1, float speed = 200, float rotation = 0)
+            : base(null, texture, position, scale, speed, rotation) { }
 
         public override void Update(GameTime gameTime)
         {
