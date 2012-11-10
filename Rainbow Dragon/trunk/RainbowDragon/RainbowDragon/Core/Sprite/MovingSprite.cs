@@ -9,8 +9,8 @@ namespace RainbowDragon.Core.Sprite
 {
     class MovingSprite:Sprite
     {
-        public float speed;
-        public float rotation;
+        public float speed {get; set;}
+        public float rotation{ get; set; }
 
         public Rectangle Hitbox
         {
