@@ -109,10 +109,16 @@
   <ItemGroup>
     <Compile Include="Core\Enemies\Arrow.cs" />
     <Compile Include="Core\Enemies\EnemyManager.cs" />
+    <Compile Include="Core\Enemies\InverseArrow.cs" />
+    <Compile Include="Core\Enemies\NormalArrow.cs" />
+    <Compile Include="Core\Enemies\PoisonArrow.cs" />
+    <Compile Include="Core\Enemies\SlowArrow.cs" />
     <Compile Include="Core\Levels\Level.cs" />
     <Compile Include="Core\Levels\LevelManager.cs" />
     <Compile Include="Core\ParticleEngine\Particle.cs" />
     <Compile Include="Core\ParticleEngine\ParticleEngine.cs" />
+    <Compile Include="Core\Pickups\AcceleratingSun.cs" />
+    <Compile Include="Core\Pickups\InvincibleSun.cs" />
     <Compile Include="Core\Pickups\PickupsManager.cs" />
     <Compile Include="Core\Pickups\Sun.cs" />
     <Compile Include="Core\Player\Dragon.cs" />
@@ -126,6 +132,7 @@
     <Compile Include="Core\Sprite\Sprite.cs" />
     <Compile Include="FollowSprite.cs" />
     <Compile Include="HelperClasses\Constants.cs" />
+    <Compile Include="HelperClasses\ContentLoader.cs" />
     <Compile Include="HelperClasses\Move.cs" />
     <Compile Include="HelperClasses\MoveQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

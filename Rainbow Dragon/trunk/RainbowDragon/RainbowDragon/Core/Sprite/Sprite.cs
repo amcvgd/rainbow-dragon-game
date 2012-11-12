@@ -16,7 +16,9 @@ namespace RainbowDragon.Core.Sprite
 
         float scale = 1;
         Rectangle source;
-        
+
+        public Texture2D Texture { get { return texture; } set { texture = value; } }
+        public Vector2 Position { get { return position; } set { position = value; } }
         public float Scale
         {
             get { return scale; }
@@ -44,6 +46,11 @@ namespace RainbowDragon.Core.Sprite
             this.position = position;
             this.scale = scale;
             Source = new Rectangle(0, 0, (int)(texture.Width * scale), (int)(texture.Height * scale));
+        }
+
+        public Sprite()
+        {
+
         }
 
 
