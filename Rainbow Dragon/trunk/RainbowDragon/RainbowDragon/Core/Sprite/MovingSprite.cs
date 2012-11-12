@@ -41,6 +41,9 @@ namespace RainbowDragon.Core.Sprite
             return false;
         }
 
+        public MovingSprite()
+        {
 
+        }
     }
 }

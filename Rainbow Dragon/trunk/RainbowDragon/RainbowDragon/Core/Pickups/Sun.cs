@@ -18,6 +18,16 @@ namespace RainbowDragon.Core.Pickups
             this.type = type;
         }
 
+        public Sun()
+        {
+
+        }
+        protected int size;
+        //protected Texture2D texture;
+        //protected Vector2 position;
+        public int Size { get { return size; } set { size = value; } }
+
+        
 
     }
 }

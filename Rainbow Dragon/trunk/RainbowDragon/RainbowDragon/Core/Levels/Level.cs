@@ -15,6 +15,17 @@ namespace RainbowDragon.Core.Levels
         public int time { get; set; }
 
 
+        public void Update()
+        {
+
+
+        }
+
+        public void Draw()
+        {
+
+
+        }
 
     }
 }

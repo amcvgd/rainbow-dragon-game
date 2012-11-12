@@ -3,13 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using RainbowDragon.Core.Sprite;
 
 namespace RainbowDragon.Core.Enemies
 {
-    class Arrow
+    class Arrow:MovingSprite
     {
-        public String type { get; set; }
-        public int direction { get; set; } //in degrees from 0 to 360
-        public Vector2 position { get; set; }
+        protected int direction; //in degrees from 0 to 360
+        //public Vector2 position { get; set; }
+
+        public int Direction { get { return direction; } set { direction = value; } }
+
+
+        public Arrow()
+        {
+
+        }
+
     }
 }
