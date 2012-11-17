@@ -12,6 +12,8 @@ namespace RainbowDragon.Core.Player
 {
     class DragonHead : DragonPart
     {
+        public bool inversed = false;
+        
         public DragonHead(Texture2D texture, Vector2 position, float scale = 1, float speed = 200, float rotation = 0)
             : base(null, texture, position, scale, speed, rotation) { }
 
@@ -21,11 +23,13 @@ namespace RainbowDragon.Core.Player
             KeyboardState aKeyboard = Keyboard.GetState();
 
             rotation += (float)(aGamePad.ThumbSticks.Left.X * 3.0f * gameTime.ElapsedGameTime.TotalSeconds);
-            if (aKeyboard.IsKeyDown(Keys.Down) || aKeyboard.IsKeyDown(Keys.Right))
+            if (!inversed && (aKeyboard.IsKeyDown(Keys.Down) || aKeyboard.IsKeyDown(Keys.Right)) ||
+                (inversed && (aKeyboard.IsKeyDown(Keys.Up) || aKeyboard.IsKeyDown(Keys.Left))))
             {
                 rotation += (float)(1 * 3.0f * gameTime.ElapsedGameTime.TotalSeconds);
             }
-            if (aKeyboard.IsKeyDown(Keys.Up) || aKeyboard.IsKeyDown(Keys.Left))
+            else if (inversed && (aKeyboard.IsKeyDown(Keys.Down) || aKeyboard.IsKeyDown(Keys.Right)) ||
+                (!inversed && (aKeyboard.IsKeyDown(Keys.Up) || aKeyboard.IsKeyDown(Keys.Left))))
             {
                 rotation -= (float)(1 * 3.0f * gameTime.ElapsedGameTime.TotalSeconds);
             }

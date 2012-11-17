@@ -31,6 +31,14 @@ namespace RainbowDragon.HelperClasses
         public const string ACCELERATING_SUN = "accelerating_sun";
         public const string INVINCIBLE_SUN = "invincible_sun";
 
+        //dragon parts
+        public const string DRAGON_HEAD = "dragon_head";
+        public const string DRAGON_BODY = "dragon_body";
+        public const string DRAGON_TAIL = "dragon_tail";
+
+        //rainbow
+        public const string RAINBOW_PART = "rainbow_part";
+
         //default paths for textures
         public const string NORMAL_ARROW_PATH = "Enemies\\normal_arrow";
         public const string SLOW_ARROW_PATH = "Enemies\\slow_arrow";
@@ -39,7 +47,10 @@ namespace RainbowDragon.HelperClasses
         public const string NORMAL_SUN_PATH = "Pickups\\normal_sun";
         public const string ACCELERATING_SUN_PATH = "Pickups\\accelerating_sun";
         public const string INVINCIBLE_SUN_PATH = "Pickups\\invincible_sun";
-
+        public const string DRAGON_HEAD_PATH = "Player\\dragon_head";
+        public const string DRAGON_BODY_PATH = "Player\\dragon_body";
+        public const string DRAGON_TAIL_PATH = "Player\\dragon_tail";
+        public const string RAINBOW_PART_PATH = "Player\\rainbow_part";
 
     }
 }

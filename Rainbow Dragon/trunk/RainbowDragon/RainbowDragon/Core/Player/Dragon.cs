@@ -13,10 +13,11 @@ namespace RainbowDragon.Core.Player
 {
     class Dragon
     {
-        List<DragonPart> dragon;                            //The Dragon's body parts
+        public List<DragonPart> dragon;                     //The Dragon's body parts
+        public DragonHead head;
+
         List<FollowingSprite> rainbow;                      //The sections of the rainbow
 
-        Texture2D dragonHead, dragonBodyPart, dragonTail;   //Textures for the head, body, and tail of the dragon
         Texture2D rainbowTexture;                           //Texture for the rainbow
 
         int bodySize;                                       //How many body sections the dragon has (does not include head & tail)
@@ -28,32 +29,40 @@ namespace RainbowDragon.Core.Player
         KeyboardState prevKeyState = new KeyboardState();   //Keyboard input; used to make sure the buttons are released
         GamePadState prevPadState = new GamePadState();     //Controller input; same deal
 
+        float speedBoostTimer = 0;
+        float invinciTimer = 0;
+        float slowTimer = 0, poisonTimer = 0, inverseTimer = 0;
+        float poiHitter = 0;
+
+        bool invincible = false;
+
+        ContentLoader contentLoader;
+
         /// <summary>
         /// Initializes all of our variables.
         /// Then, creates a head, however many body parts there are, and finally, the tail.
         /// </summary>
-        public Dragon(int bodySize)
+        public Dragon(int bodySize, ContentLoader loader)
         {
             this.bodySize = bodySize;
             dragon = new List<DragonPart>();
             rainbow = new List<FollowingSprite>();
+            contentLoader = loader;
         }
 
-        public void LoadContent(ContentManager contentManager)
+        //public void LoadContent(ContentManager contentManager)
+        public void Initialize(Vector2 position)
         {
-            dragonHead = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
-            dragonBodyPart = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
-            dragonTail = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
-            rainbowTexture = contentManager.Load<Texture2D>("Core\\Dragon\\Car");
-
-            dragon.Add(new DragonHead(dragonHead, Vector2.Zero, 0.5f));                           //Head 
-
+            dragon.Add(new DragonHead(contentLoader.AddTexture2(Constants.DRAGON_HEAD, Constants.DRAGON_HEAD_PATH), position));
+            head = (DragonHead)dragon[0];
             for (int i = 0; i < bodySize; i++)
             {
-                dragon.Add(new DragonPart(dragon[i], dragonBodyPart, Vector2.Zero, 0.5f));        //Body Parts
+                dragon.Add(new DragonPart(dragon[i], 
+                    contentLoader.AddTexture2(Constants.DRAGON_BODY, Constants.DRAGON_BODY_PATH), position));
             }
-
-            dragon.Add(new DragonPart(dragon[bodySize], dragonBodyPart, Vector2.Zero, 0.5f));     //Tail
+            dragon.Add(new DragonPart(dragon[bodySize], 
+                contentLoader.AddTexture2(Constants.DRAGON_TAIL, Constants.DRAGON_TAIL_PATH), position));
+            rainbowTexture = contentLoader.AddTexture2(Constants.RAINBOW_PART, Constants.RAINBOW_PART_PATH);
         }
 
         /// <summary>
@@ -183,10 +192,20 @@ namespace RainbowDragon.Core.Player
 
         public void AddToRainbowMeter(int amt)
         {
+            if (rainbowMeter == 0 && amt < 0)
+            {
+                //We died!
+                return;
+            }
+
             rainbowMeter += amt;
 
             if (rainbowMeter > maxRainbowMeter)
                 rainbowMeter = maxRainbowMeter;
+            if (rainbowMeter < 0)
+            {
+                rainbowMeter = 0;
+            }
         }
 
         public bool IsMeterFull()
@@ -197,6 +216,101 @@ namespace RainbowDragon.Core.Player
         public bool IsFullyCharged()
         {
             return charge == maxCharge;
+        }
+
+        //BUFFS
+        public void SpeedBoost()
+        {
+            if (speedBoostTimer == 0)
+                head.speed *= 2;
+            speedBoostTimer = 7.5f;
+        }
+
+        public void Invinciblility()
+        {
+            if (invinciTimer == 0)
+                invincible = true;
+            invinciTimer = 3;
+        }
+
+        //DEBUFFS
+        public void Slow()
+        {
+            if (slowTimer == 0)
+                head.speed /= 2;
+            slowTimer = 7.5f;
+        }
+
+        public void Inverse()
+        {
+            if (inverseTimer == 0)
+                head.inversed = true;
+            inverseTimer = 5;
+        }
+
+        public void Poison()
+        {
+            poisonTimer = 10;
+            poiHitter = 1;
+        }
+
+        public void UpdateTimers(GameTime gameTime)
+        {
+            //Speed Boost Powerup
+            if (speedBoostTimer > 0)
+                speedBoostTimer -= gameTime.ElapsedGameTime.Seconds;
+            if (speedBoostTimer < 0)
+            {
+                speedBoostTimer = 0;
+                head.speed /= 2;
+            }
+
+            //Invincibility Powerup
+            if (invinciTimer > 0)
+                invinciTimer -= gameTime.ElapsedGameTime.Seconds;
+            if (invinciTimer < 0)
+            {
+                invinciTimer = 0;
+                invincible = false;
+            }
+
+            //Slow Debuff
+            if (slowTimer > 0)
+                slowTimer -= gameTime.ElapsedGameTime.Seconds;
+            if (slowTimer < 0)
+            {
+                slowTimer = 0;
+                head.speed *= 2;
+            }
+
+            //Inverse Debuff
+            if (inverseTimer > 0)
+                inverseTimer -= gameTime.ElapsedGameTime.Seconds;
+            if (inverseTimer < 0)
+            {
+                inverseTimer = 0;
+                head.inversed = false;
+            }
+
+            //Poison Debuff
+            if (poisonTimer > 0)
+                poisonTimer -= gameTime.ElapsedGameTime.Seconds;
+            if (poisonTimer < 0)
+            {
+                poisonTimer = 0;
+                poiHitter = 0;
+            }
+
+            if (poiHitter > 0)
+                poiHitter -= gameTime.ElapsedGameTime.Seconds;
+            if (poiHitter < 0)
+            {
+                AddToRainbowMeter(-2);
+                if (poisonTimer > 0)
+                    poiHitter = 1;
+                else
+                    poiHitter = 0;
+            }
         }
     }
 }

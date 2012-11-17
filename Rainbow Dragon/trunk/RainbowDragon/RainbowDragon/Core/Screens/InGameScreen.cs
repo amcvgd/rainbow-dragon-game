@@ -29,18 +29,17 @@ namespace RainbowDragon.Core.Screens
 
         public void Initialize()
         {
-            mainPlayer = new Dragon(2);
+            mainPlayer = new Dragon(2, loader);
             levelManager = new LevelManager(loader);
             levelManager.Initialize();
-
-            //mainPlayer.Initialize(new Vector2(screenWidth/2, screenHeight/2)); //this adds a dragon with only head and tail
+            mainPlayer.Initialize(new Vector2(screenWidth/2, screenHeight/2));
         }
         public void Update(GameTime gameTime)
         {
             levelManager.Update(gameTime);
             mainPlayer.Update(gameTime);
 
-
+            levelManager.CheckForCollision(mainPlayer);
         }
 
         public void Draw(SpriteBatch spriteBatch)
