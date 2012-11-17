@@ -237,9 +237,53 @@ namespace RainbowDragon.Core.Levels
 
         public void CheckForCollision(Dragon player)
         {
+            //Check each part of the dragon
+            foreach (DragonPart part in player.dragon)
+            {
+                //Check for collisions with suns
+                foreach (Sun sun in currentLevel.suns)
+                {
+                    if (part.Hitbox.Intersects(sun.Hitbox))
+                    {
+                        if (sun.GetType() == typeof(AcceleratingSun))
+                        {
+                            player.SpeedBoost();
+                        }
+                        else if (sun.GetType() == typeof(InvincibleSun))
+                        {
+                            player.Invinciblility();
+                        }
+                        else
+                        {
+                            player.AddToRainbowMeter(5 * sun.Size);      //The size is taken into account when adding to the meter
+                        }
+                    }
+                }
 
-            //currentLevel.CheckForCollision(player);
-
+                //Check for collisions with arrows
+                foreach (Arrow arrow in currentLevel.arrows)
+                {
+                    if (part.Hitbox.Intersects(arrow.Hitbox))
+                    {
+                        if (arrow.GetType() == typeof(SlowArrow))
+                        {
+                            player.Slow();
+                        }
+                        else if (arrow.GetType() == typeof(InverseArrow))
+                        {
+                            player.Inverse();
+                        }
+                        else if (arrow.GetType() == typeof(PoisonArrow))
+                        {
+                            player.Poison();
+                        }
+                        else
+                        {
+                            player.AddToRainbowMeter(-10);
+                        }
+                    }
+                }
+            }
         }
 
 
