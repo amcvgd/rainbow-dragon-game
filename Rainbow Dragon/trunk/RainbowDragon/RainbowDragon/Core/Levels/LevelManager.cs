@@ -7,8 +7,9 @@ using Microsoft.Xna.Framework;
 using RainbowDragon.Core.Pickups;
 using RainbowDragon.Core.Enemies;
 using RainbowDragon.HelperClasses;
-using RainbowDragon.Core.Sprite;
+using RainbowDragon.Core.Sprites;
 using RainbowDragon.Core.Player;
+using Microsoft.Xna.Framework.Graphics;
 namespace RainbowDragon.Core.Levels
 {
     class LevelManager
@@ -20,19 +21,24 @@ namespace RainbowDragon.Core.Levels
         List<Level> levels;
         Level currentLevel;
         ContentLoader contentLoader;
+        int screenWidth;
+        int screenHeight;
+        Game1 game;
 
-        public LevelManager(ContentLoader loader)
+        public LevelManager(ContentLoader loader, Game1 game)
         {
 
             contentLoader = loader;
+            this.game = game;
 
         }
 
 
-        public void Initialize()
+        public void Initialize(int scrWidth, int scrHeight)
         {
 
-
+            screenHeight = scrHeight;
+            screenWidth = scrWidth;
 
             currentLevelNumber = 1; //starts from 1 
             System.IO.Stream stream = TitleContainer.OpenStream("Content\\Core\\levels.xml");
@@ -41,7 +47,7 @@ namespace RainbowDragon.Core.Levels
 
             foreach (XElement level in doc.Descendants("level"))
             {
-                Level newLevel = new Level();
+                Level newLevel = new Level(contentLoader, game.GraphicsDevice);
                 newLevel.levelNumber = Convert.ToInt32(level.Element("number").Value);
                 newLevel.time = Convert.ToInt32(level.Element("time").Value);
                 foreach (XElement sun in level.Descendants("sun"))
@@ -122,13 +128,17 @@ namespace RainbowDragon.Core.Levels
 
                 }
 
-
+                string back = level.Element("background").Value;
+                newLevel.ColoredBackgroud = contentLoader.AddTexture2(back, Constants.BACKGROUND_BASE_PATH + back);
+                newLevel.BWBackgroud = contentLoader.AddTexture2("bw_" + back, Constants.BACKGROUND_BASE_PATH + "bw_" + back);
+                newLevel.BackgroundRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
                 levels.Add(newLevel);
+                
 
             }
 
 
-
+            currentLevel = GetCurrentLevel();
             #region Old Version XML parser
             /*
             levels = (from level in doc.Descendants("level")
@@ -202,7 +212,7 @@ namespace RainbowDragon.Core.Levels
 
         public Level GetCurrentLevel()
         {
-            Level tempNewLevel = new Level();
+            Level tempNewLevel = new Level(contentLoader, game.GraphicsDevice);
             if (levels[0].levelNumber == currentLevelNumber)
             {
                 tempNewLevel = levels[0];
@@ -232,6 +242,11 @@ namespace RainbowDragon.Core.Levels
             //also code to check if game over and send respective message to ingameScreen
             //also call methods that check if more arrows need to be sent or more pickups
             //collision detection maybe should have its own method and be called separately from ingamescreen
+
+        }
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            currentLevel.Draw(spriteBatch);
 
         }
 

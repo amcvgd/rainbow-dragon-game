@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using RainbowDragon.Core.Sprite;
+using RainbowDragon.Core.Sprites;
 
 namespace RainbowDragon.Core.Enemies
 {

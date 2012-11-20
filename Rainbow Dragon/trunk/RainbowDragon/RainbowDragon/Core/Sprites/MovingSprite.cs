@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RainbowDragon.Core.Sprite
+namespace RainbowDragon.Core.Sprites
 {
     class MovingSprite:Sprite
     {
