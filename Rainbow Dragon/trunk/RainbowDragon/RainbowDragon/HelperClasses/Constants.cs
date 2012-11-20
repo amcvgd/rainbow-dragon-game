@@ -51,6 +51,10 @@ namespace RainbowDragon.HelperClasses
         public const string DRAGON_BODY_PATH = "Player\\dragon_body";
         public const string DRAGON_TAIL_PATH = "Player\\dragon_tail";
         public const string RAINBOW_PART_PATH = "Player\\rainbow_part";
+        public const string BACKGROUND_BASE_PATH = "Levels\\";
+
+        //effects
+        public const string CHARGE_FIELD = "charge_field";
 
     }
 }

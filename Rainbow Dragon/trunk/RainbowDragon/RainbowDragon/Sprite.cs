@@ -38,6 +38,10 @@ namespace RainbowDragon
             height = (int)(texture.Height * scale);
         }
 
+        public Sprite()
+        {
+
+        }
         //Any children can override the Update; Feel free to change
         public virtual void Update(GameTime gameTime)
         {

@@ -13,6 +13,7 @@ namespace RainbowDragon.HelperClasses
     class ContentLoader
     {
         Dictionary<string, Texture2D> textures;
+        
         Game1 game;
         public ContentLoader(Game1 game1)
         {
@@ -20,6 +21,9 @@ namespace RainbowDragon.HelperClasses
 
             textures = new Dictionary<string, Texture2D>();
 
+            
+            Texture2D chargeField = game1.Content.Load<Texture2D>("Effects\\lightmask");
+            textures.Add(Constants.CHARGE_FIELD, chargeField);
 
 
         }
@@ -66,6 +70,11 @@ namespace RainbowDragon.HelperClasses
             
             return textures[key];
 
+        }
+
+        public Effect AddEffect(string effectName)
+        {
+            return game.Content.Load<Effect>("Effects\\" + effectName);
         }
 
     }

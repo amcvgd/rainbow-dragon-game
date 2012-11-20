@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using RainbowDragon.HelperClasses;
-using RainbowDragon.Core.Sprite;
+using RainbowDragon.Core.Sprites;
 
 namespace RainbowDragon.Core.Player
 {
@@ -35,7 +35,7 @@ namespace RainbowDragon.Core.Player
         float poiHitter = 0;
 
         bool invincible = false;
-
+        
         ContentLoader contentLoader;
 
         /// <summary>
@@ -63,6 +63,7 @@ namespace RainbowDragon.Core.Player
             dragon.Add(new DragonPart(dragon[bodySize], 
                 contentLoader.AddTexture2(Constants.DRAGON_TAIL, Constants.DRAGON_TAIL_PATH), position));
             rainbowTexture = contentLoader.AddTexture2(Constants.RAINBOW_PART, Constants.RAINBOW_PART_PATH);
+            rainbowMeter = 200;
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace RainbowDragon.Core.Player
                     else if (rainbowMeter == 0)
                     {
                         //We are out of rainbow meter, and therefore we cannot continue charge the blast
-
+                        charge++;
                     }
                     else
                     {
@@ -133,7 +134,7 @@ namespace RainbowDragon.Core.Player
                 else
                 {
                     //Fire Color Blast Thing -- The blast radius will be dependent upon the amount of charge that has been accrued
-
+                    Messenger<int, Vector2>.Broadcast("add circle", 20, head.position);
 
                     //We are no longer charging, so reset charge to 0
                     isCharging = false;
@@ -167,7 +168,7 @@ namespace RainbowDragon.Core.Player
         public void HandleRainbow()
         {
            int sections = rainbowMeter / 10;
-
+                
             //If this occurs, then our rainbow trail is up-to-date
             if (sections == rainbow.Count) return;
 

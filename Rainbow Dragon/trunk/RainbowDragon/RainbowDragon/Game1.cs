@@ -27,6 +27,9 @@ namespace RainbowDragon
         StartScreen startScreen; 
         InGameScreen inGameScreen;
         GameoverScreen gameOverScreen;
+        public int CurrentScreenWidth { get; set; }
+        public int CurrentScreenHeight { get; set; }
+
 
         public void setGameState(int newState)
         {
@@ -36,6 +39,10 @@ namespace RainbowDragon
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 1366;
+            //if (!graphics.IsFullScreen)
+              //  graphics.ToggleFullScreen();
             Content.RootDirectory = "Content";
         }
 
@@ -48,11 +55,11 @@ namespace RainbowDragon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            setGameState(Constants.GAME_STATE_START);
+            setGameState(Constants.GAME_STATE_INGAME);
             inGameScreen = new InGameScreen(this);
             startScreen = new StartScreen();
             gameOverScreen = new GameoverScreen();
-            
+            inGameScreen.Initialize();
             base.Initialize();
         }
 
@@ -117,7 +124,7 @@ namespace RainbowDragon
 
             // TODO: Add your drawing code here
 
-            spriteBatch.Begin();
+            
             if (currentGameState == Constants.GAME_STATE_START)
             {
                 startScreen.Draw(spriteBatch);
@@ -132,7 +139,7 @@ namespace RainbowDragon
             }
 
             base.Draw(gameTime);
-            spriteBatch.End();
+            
         }
     }
 }

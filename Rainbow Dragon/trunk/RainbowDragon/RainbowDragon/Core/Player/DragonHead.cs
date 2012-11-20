@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RainbowDragon.Core.Sprite;
+using RainbowDragon.Core.Sprites;
 using RainbowDragon.HelperClasses;
 
 namespace RainbowDragon.Core.Player

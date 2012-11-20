@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using RainbowDragon.HelperClasses;
 
-namespace RainbowDragon.Core.Sprite
+namespace RainbowDragon.Core.Sprites
 {
     class FollowingSprite:MovingSprite
     {
