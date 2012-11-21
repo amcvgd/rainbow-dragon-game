@@ -99,7 +99,7 @@ namespace RainbowDragon.Core.Levels
         public void AddCircle(int radius, Vector2 position)
         {
             Circle newcircle = new Circle();
-            newcircle.Initialize(loader.GetTexture(Constants.CHARGE_FIELD), new Rectangle((int)position.X, (int)position.Y, radius*10, radius*10));
+            newcircle.Initialize(loader.GetTexture(Constants.CHARGE_FIELD), new Rectangle((int)position.X - radius/2, (int)position.Y-radius/2, radius, radius));
             circles.Add(newcircle);
         }
 

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using RainbowDragon.HelperClasses;
 using RainbowDragon.Core.Sprites;
+using RainbowDragon.Core.Levels;
 
 namespace RainbowDragon.Core.Player
 {
@@ -38,6 +39,9 @@ namespace RainbowDragon.Core.Player
         
         ContentLoader contentLoader;
 
+        Circle circle;
+        const int chargeMultiplier = 10; //used to find the radius of circle
+
         /// <summary>
         /// Initializes all of our variables.
         /// Then, creates a head, however many body parts there are, and finally, the tail.
@@ -48,6 +52,7 @@ namespace RainbowDragon.Core.Player
             dragon = new List<DragonPart>();
             rainbow = new List<FollowingSprite>();
             contentLoader = loader;
+            circle = new Circle();
         }
 
         //public void LoadContent(ContentManager contentManager)
@@ -64,6 +69,9 @@ namespace RainbowDragon.Core.Player
                 contentLoader.AddTexture2(Constants.DRAGON_TAIL, Constants.DRAGON_TAIL_PATH), position));
             rainbowTexture = contentLoader.AddTexture2(Constants.RAINBOW_PART, Constants.RAINBOW_PART_PATH);
             rainbowMeter = 200;
+
+            circle.Initialize(contentLoader.AddTexture2(Constants.RAINBOW_CIRCLE, Constants.EFFECT_BASE_PATH + Constants.RAINBOW_CIRCLE),
+                new Rectangle((int)head.position.X + (charge * chargeMultiplier) / 2, (int)head.position.Y + (charge * chargeMultiplier) / 2, charge * chargeMultiplier, charge * chargeMultiplier));
         }
 
         /// <summary>
@@ -100,6 +108,13 @@ namespace RainbowDragon.Core.Player
             {
                 sec.Draw(spriteBatch);
             }
+
+            if (isCharging)
+            {
+                circle.UpdateRectangle(new Rectangle((int)head.position.X - (charge * chargeMultiplier) / 2, (int)head.position.Y - (charge * chargeMultiplier) / 2, charge * chargeMultiplier, charge * chargeMultiplier));
+                circle.Draw(spriteBatch);
+            }
+
         }
 
 
@@ -134,7 +149,7 @@ namespace RainbowDragon.Core.Player
                 else
                 {
                     //Fire Color Blast Thing -- The blast radius will be dependent upon the amount of charge that has been accrued
-                    Messenger<int, Vector2>.Broadcast("add circle", 20, head.position);
+                    Messenger<int, Vector2>.Broadcast("add circle", charge*chargeMultiplier, head.position);
 
                     //We are no longer charging, so reset charge to 0
                     isCharging = false;

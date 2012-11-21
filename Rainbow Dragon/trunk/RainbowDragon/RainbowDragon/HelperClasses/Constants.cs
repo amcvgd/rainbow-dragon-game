@@ -55,6 +55,8 @@ namespace RainbowDragon.HelperClasses
 
         //effects
         public const string CHARGE_FIELD = "charge_field";
+        public const string RAINBOW_CIRCLE = "rainbow_circle";
+        public const string EFFECT_BASE_PATH = "Effects\\";
 
     }
 }

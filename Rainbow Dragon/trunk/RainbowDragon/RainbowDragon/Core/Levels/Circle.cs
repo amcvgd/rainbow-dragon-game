@@ -33,5 +33,11 @@ namespace RainbowDragon.Core.Levels
             //base.Draw(spriteBatch);
         }
 
+        public void UpdateRectangle(Rectangle newRect)
+        {
+            destRect = newRect;
+
+        }
+
     }
 }
