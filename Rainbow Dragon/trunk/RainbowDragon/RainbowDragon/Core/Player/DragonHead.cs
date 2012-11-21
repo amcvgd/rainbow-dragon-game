@@ -14,7 +14,7 @@ namespace RainbowDragon.Core.Player
     {
         public bool inversed = false;
         
-        public DragonHead(Texture2D texture, Vector2 position, float scale = 1, float speed = 200, float rotation = 0)
+        public DragonHead(Texture2D texture, Vector2 position, float scale = 1, float speed = 300, float rotation = 0)
             : base(null, texture, position, scale, speed, rotation) { }
 
         public override void Update(GameTime gameTime)
@@ -41,6 +41,15 @@ namespace RainbowDragon.Core.Player
 
             //Update Move List
             moves.Push(new Move(speed, rotation));
+
+            if (position.X-size.Width/2 > 1366)
+                position.X = 0;
+            if (position.X+size.Width/2 < 0)
+                position.X = 1366;
+            if (position.Y+size.Height/2 < 0)
+                position.Y = 768;
+            if (position.Y-size.Height/2 > 768)
+                position.Y = 0;
         }
     }
 }

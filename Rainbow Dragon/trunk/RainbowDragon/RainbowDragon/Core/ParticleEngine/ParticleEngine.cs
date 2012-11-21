@@ -19,6 +19,7 @@ namespace RainbowDragon
         public Vector2 EmitterLocation;         //Location we are emitting from
         private List<Particle> particles;       //List used to hold our particles
         private List<Texture2D> textures;       //List holding our available textures
+        private bool emit = false;
 
         /// <summary>
         /// The constructor takes in the list of available textures for the particles to be created,
@@ -70,9 +71,12 @@ namespace RainbowDragon
         {
             int total = 10;
 
-            for (int i = 0; i < total; i++)
+            if (emit)
             {
-                particles.Add(GenerateNewParticle());
+                for (int i = 0; i < total; i++)
+                {
+                    particles.Add(GenerateNewParticle());
+                } 
             }
 
             for (int particle = 0; particle < particles.Count; particle++)
@@ -99,6 +103,16 @@ namespace RainbowDragon
                 particles[index].Draw(spriteBatch);
             }
             spriteBatch.End();
+        }
+
+        public void Emit()
+        {
+            emit = true;
+        }
+
+        public void StopEmitting()
+        {
+            emit = false;
         }
     }
 }

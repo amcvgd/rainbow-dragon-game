@@ -39,6 +39,11 @@ namespace RainbowDragon.HelperClasses
         //rainbow
         public const string RAINBOW_PART = "rainbow_part";
 
+        //particles
+        public const string BLUE_PARTICLE = "blue_particle";
+        public const string GREEN_PARTICLE = "green_particle";
+        public const string RED_PARTICLE = "red_particle";
+
         //default paths for textures
         public const string NORMAL_ARROW_PATH = "Enemies\\normal_arrow";
         public const string SLOW_ARROW_PATH = "Enemies\\slow_arrow";
@@ -52,6 +57,7 @@ namespace RainbowDragon.HelperClasses
         public const string DRAGON_TAIL_PATH = "Player\\dragon_tail";
         public const string RAINBOW_PART_PATH = "Player\\rainbow_part";
         public const string BACKGROUND_BASE_PATH = "Levels\\";
+        public const string PARTICLE_BASE_PATH = "Particles\\";
 
         //effects
         public const string CHARGE_FIELD = "charge_field";

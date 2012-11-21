@@ -23,8 +23,8 @@ namespace RainbowDragon.Core.Player
 
         int bodySize;                                       //How many body sections the dragon has (does not include head & tail)
                                                             //Perhaps we can have the bodySize scale with the difficulty level?
-        int rainbowMeter, maxRainbowMeter = 100;            //How much rainbow meter the player has, and the max rainbow meter
-        int charge, maxCharge = 20;                         //How much the color blast is charged, and the max charge
+        float rainbowMeter, maxRainbowMeter = 200;            //How much rainbow meter the player has, and the max rainbow meter
+        float charge, maxCharge = 20;                         //How much the color blast is charged, and the max charge
         bool isCharging;                                    //Are we currently charging the blast?
 
         KeyboardState prevKeyState = new KeyboardState();   //Keyboard input; used to make sure the buttons are released
@@ -39,8 +39,28 @@ namespace RainbowDragon.Core.Player
         
         ContentLoader contentLoader;
 
+        List<Texture2D> particleTextures;
+        ParticleEngine particleEngine;
+
+
         Circle circle;
         const int chargeMultiplier = 10; //used to find the radius of circle
+
+        public int Meter
+        {
+            get { return (int)rainbowMeter; }
+        }
+
+        public int MaxMeter
+        {
+            get { return (int)maxRainbowMeter; }
+        }
+
+        public int Charge
+        {
+            get { return (int)charge; }
+        }
+
 
         /// <summary>
         /// Initializes all of our variables.
@@ -58,20 +78,31 @@ namespace RainbowDragon.Core.Player
         //public void LoadContent(ContentManager contentManager)
         public void Initialize(Vector2 position)
         {
-            dragon.Add(new DragonHead(contentLoader.AddTexture2(Constants.DRAGON_HEAD, Constants.DRAGON_HEAD_PATH), position));
+            //Dragon Creation
+            dragon.Add(new DragonHead(contentLoader.AddTexture2(Constants.DRAGON_HEAD, Constants.DRAGON_HEAD_PATH), position, .75f));
             head = (DragonHead)dragon[0];
             for (int i = 0; i < bodySize; i++)
             {
-                dragon.Add(new DragonPart(dragon[i], 
-                    contentLoader.AddTexture2(Constants.DRAGON_BODY, Constants.DRAGON_BODY_PATH), position));
+                dragon.Add(new DragonPart(dragon[i],
+                    contentLoader.AddTexture2(Constants.DRAGON_BODY + (i + 1), Constants.DRAGON_BODY_PATH + (i + 1)), position, .75f));
             }
             dragon.Add(new DragonPart(dragon[bodySize], 
-                contentLoader.AddTexture2(Constants.DRAGON_TAIL, Constants.DRAGON_TAIL_PATH), position));
+                contentLoader.AddTexture2(Constants.DRAGON_TAIL, Constants.DRAGON_TAIL_PATH), position, .75f));
+            
+            //Rainbow Creation
             rainbowTexture = contentLoader.AddTexture2(Constants.RAINBOW_PART, Constants.RAINBOW_PART_PATH);
             rainbowMeter = 200;
 
             circle.Initialize(contentLoader.AddTexture2(Constants.RAINBOW_CIRCLE, Constants.EFFECT_BASE_PATH + Constants.RAINBOW_CIRCLE),
-                new Rectangle((int)head.position.X + (charge * chargeMultiplier) / 2, (int)head.position.Y + (charge * chargeMultiplier) / 2, charge * chargeMultiplier, charge * chargeMultiplier));
+                new Rectangle((int)head.position.X + (Charge * chargeMultiplier) / 2, (int)head.position.Y + (Charge * chargeMultiplier) / 2, Charge * chargeMultiplier, Charge * chargeMultiplier));
+
+            //Particle Engine Creation
+            particleTextures = new List<Texture2D>();
+            particleTextures.Add(contentLoader.AddTexture2(Constants.BLUE_PARTICLE, Constants.PARTICLE_BASE_PATH + Constants.BLUE_PARTICLE));
+            particleTextures.Add(contentLoader.AddTexture2(Constants.GREEN_PARTICLE, Constants.PARTICLE_BASE_PATH + Constants.GREEN_PARTICLE));
+            particleTextures.Add(contentLoader.AddTexture2(Constants.RED_PARTICLE, Constants.PARTICLE_BASE_PATH + Constants.RED_PARTICLE));
+            particleEngine = new ParticleEngine(particleTextures, head.Position);
+
         }
 
         /// <summary>
@@ -80,9 +111,12 @@ namespace RainbowDragon.Core.Player
         /// </summary>
         public void Update(GameTime gameTime)
         {
+            //Handle Controls
             HandleInput();
+
+            //Control the Length of the Rainbow
             HandleRainbow();
-            
+
             foreach (DragonPart part in dragon)
             {
                 part.Update(gameTime);
@@ -92,6 +126,11 @@ namespace RainbowDragon.Core.Player
             {
                 sec.Update(gameTime);
             }
+
+            //Update Particle Engine
+            particleEngine.EmitterLocation = head.Position;
+            particleEngine.Update();
+
         }
 
         /// <summary>
@@ -99,6 +138,7 @@ namespace RainbowDragon.Core.Player
         /// </summary>
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
             foreach (DragonPart part in dragon)
             {
                 part.Draw(spriteBatch);
@@ -111,10 +151,14 @@ namespace RainbowDragon.Core.Player
 
             if (isCharging)
             {
-                circle.UpdateRectangle(new Rectangle((int)head.position.X - (charge * chargeMultiplier) / 2, (int)head.position.Y - (charge * chargeMultiplier) / 2, charge * chargeMultiplier, charge * chargeMultiplier));
+                circle.UpdateRectangle(new Rectangle((int)head.position.X - (Charge * chargeMultiplier) / 2, (int)head.position.Y - (Charge * chargeMultiplier) / 2, Charge * chargeMultiplier, Charge * chargeMultiplier));
                 circle.Draw(spriteBatch);
             }
 
+            spriteBatch.End();
+
+            //Particle Drawing (Uses it's own Additive sprite batch drawing method for cooler color effects)
+            particleEngine.Draw(spriteBatch);
         }
 
 
@@ -132,28 +176,23 @@ namespace RainbowDragon.Core.Player
                     if (IsFullyCharged())
                     {
                         //We are fully charged
-
                     }
-                    else if (rainbowMeter == 0)
-                    {
-                        //We are out of rainbow meter, and therefore we cannot continue charge the blast
-                        charge++;
-                    }
-                    else
+                    else if (rainbowMeter != 0)
                     {
                         //Charge up the Blast -- Charging uses up our rainbowMeter
-                        charge++;
-                        rainbowMeter--;
+                        charge+=.25f;
+                        rainbowMeter-=.25f;
                     }
                 }
                 else
                 {
                     //Fire Color Blast Thing -- The blast radius will be dependent upon the amount of charge that has been accrued
-                    Messenger<int, Vector2>.Broadcast("add circle", charge*chargeMultiplier, head.position);
+                    Messenger<int, Vector2>.Broadcast("add circle", Charge*chargeMultiplier, head.position);
 
                     //We are no longer charging, so reset charge to 0
                     isCharging = false;
                     charge = 0;
+                    particleEngine.StopEmitting();
                 }
             }
             else if ((aKeyboard.IsKeyDown(Keys.Space) && !prevKeyState.IsKeyDown(Keys.Space)) ||
@@ -170,6 +209,7 @@ namespace RainbowDragon.Core.Player
                     charge = 10;
                     rainbowMeter -= 10;
                     isCharging = true;
+                    particleEngine.Emit();
                 }
             }
 
@@ -182,7 +222,7 @@ namespace RainbowDragon.Core.Player
         /// </summary>
         public void HandleRainbow()
         {
-           int sections = rainbowMeter / 10;
+           int sections = (int)(rainbowMeter) / 10;
                 
             //If this occurs, then our rainbow trail is up-to-date
             if (sections == rainbow.Count) return;
@@ -208,11 +248,14 @@ namespace RainbowDragon.Core.Player
 
         public void AddToRainbowMeter(int amt)
         {
-            if (rainbowMeter == 0 && amt < 0)
+            if (amt < 0)
             {
-                //We died!
-                return;
+                if (invincible)
+                    return;
+                else if (rainbowMeter == 0)
+                    return;             //Insert Death Code here.
             }
+
 
             rainbowMeter += amt;
 

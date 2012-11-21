@@ -77,5 +77,10 @@ namespace RainbowDragon.HelperClasses
             return game.Content.Load<Effect>("Effects\\" + effectName);
         }
 
+        public SpriteFont AddFont(string fontName)
+        {
+            return game.Content.Load<SpriteFont>("Fonts\\" + fontName);
+        }
+
     }
 }

@@ -20,6 +20,7 @@ namespace RainbowDragon.Core.Screens
         ContentLoader loader;
         GraphicsDevice graphics;
         Game1 game;
+        SpriteFont font;
         public InGameScreen(Game1 game1)
         {
 
@@ -28,15 +29,15 @@ namespace RainbowDragon.Core.Screens
             loader = new ContentLoader(game1);
             graphics = game1.GraphicsDevice;
             game = game1;
-            
         }
 
         public void Initialize()
         {
-            mainPlayer = new Dragon(2, loader);
+            mainPlayer = new Dragon(3, loader);
             levelManager = new LevelManager(loader,game);
             levelManager.Initialize(screenWidth, screenHeight);
             mainPlayer.Initialize(new Vector2(screenWidth/2, screenHeight/2));
+            font = loader.AddFont("font");
         }
         public void Update(GameTime gameTime)
         {
@@ -50,9 +51,9 @@ namespace RainbowDragon.Core.Screens
         {
             spriteBatch.Begin();
             levelManager.Draw(spriteBatch);
-            mainPlayer.Draw(spriteBatch);
-            
+            spriteBatch.DrawString(font, "Rainbow Meter: " + mainPlayer.Meter + "/" + mainPlayer.MaxMeter, Vector2.Zero, Color.White);
             spriteBatch.End();
+            mainPlayer.Draw(spriteBatch);
         }
 
     }
