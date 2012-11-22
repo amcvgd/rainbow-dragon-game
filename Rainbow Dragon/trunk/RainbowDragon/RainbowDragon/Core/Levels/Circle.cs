@@ -35,7 +35,7 @@ namespace RainbowDragon.Core.Levels
 
         public void UpdateRectangle(Rectangle newRect)
         {
-            destRect = newRect;
+            destRect = newRect; 
 
         }
 

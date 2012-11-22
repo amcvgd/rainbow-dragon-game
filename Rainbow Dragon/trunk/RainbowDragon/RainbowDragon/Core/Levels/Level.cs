@@ -14,6 +14,7 @@ namespace RainbowDragon.Core.Levels
     {
         public int levelNumber { get; set; }
         public List<Arrow> arrows { get; set; }
+        public List<Arrow> deadArrows { get; set; }
         public List<Sun> suns { get; set; }
         public int time { get; set; }
         private Texture2D coloredBackground;
@@ -41,15 +42,21 @@ namespace RainbowDragon.Core.Levels
             mainTarget = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
             toColorEffect = contentLoader.AddEffect("to_color_effect");
             Messenger<int, Vector2>.AddListener("add circle", AddCircle);
-            AddCircle(10, new Vector2(300, 300));
-            
+            //AddCircle(10, new Vector2(300, 300));
+            deadArrows = new List<Arrow>();
 
 
         }
 
-        public void Update()
-        {
 
+
+        public void Update(GameTime gameTime)
+        {
+            foreach (Arrow arrow in arrows)
+            {
+
+                arrow.Update(gameTime);
+            }
 
         }
 
@@ -88,12 +95,27 @@ namespace RainbowDragon.Core.Levels
             spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
             spriteBatch.End();
             spriteBatch.Begin();
+
+            foreach (Arrow arrow in arrows)
+            {
+                arrow.Draw(spriteBatch);
+            }
             
 
             //spriteBatch.Draw(loader.GetTexture(Constants.CHARGE_FIELD), new Vector2(300, 300), Color.White);
 
 
 
+        }
+
+        public void RemoveArrows()
+        {
+            foreach(Arrow arrow in deadArrows)
+            {
+                arrows.Remove(arrow);
+
+            }
+            deadArrows.Clear();
         }
 
         public void AddCircle(int radius, Vector2 position)

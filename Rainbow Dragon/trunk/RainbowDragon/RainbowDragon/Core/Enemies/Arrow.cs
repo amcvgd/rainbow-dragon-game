@@ -9,15 +9,30 @@ namespace RainbowDragon.Core.Enemies
 {
     class Arrow:MovingSprite
     {
-        protected int direction; //in degrees from 0 to 360
+        protected float direction; //in degrees from 0 to 360
         //public Vector2 position { get; set; }
+        public Vector2 initialPosition { get; set; }
 
-        public int Direction { get { return direction; } set { direction = value; } }
+        public float Direction { get { return direction; } set { rotation = MathHelper.ToRadians(value); direction = value; } }
 
 
         public Arrow()
         {
+            speed = 5;
+        }
 
+        public override void Update(GameTime gameTime)
+        {
+
+            position.X = position.X + speed * (float)Math.Cos(rotation);
+            position.Y = position.Y + speed * (float)Math.Sin(rotation);
+            //base.Update(gameTime);
+        }
+
+        public void RestartPosition()
+        {
+            position.X = initialPosition.X;
+            position.Y = initialPosition.Y;
         }
 
     }

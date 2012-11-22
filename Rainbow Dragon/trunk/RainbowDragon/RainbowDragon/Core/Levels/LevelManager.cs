@@ -24,12 +24,14 @@ namespace RainbowDragon.Core.Levels
         int screenWidth;
         int screenHeight;
         Game1 game;
-
+        float xRatio;
+        float yRatio;
         public LevelManager(ContentLoader loader, Game1 game)
         {
 
             contentLoader = loader;
             this.game = game;
+            
 
         }
 
@@ -39,7 +41,8 @@ namespace RainbowDragon.Core.Levels
 
             screenHeight = scrHeight;
             screenWidth = scrWidth;
-
+            xRatio = screenWidth / 16;
+            yRatio = scrHeight / 9;
             currentLevelNumber = 1; //starts from 1 
             System.IO.Stream stream = TitleContainer.OpenStream("Content\\Core\\levels.xml");
             XDocument doc = XDocument.Load(stream);
@@ -122,8 +125,11 @@ namespace RainbowDragon.Core.Levels
 
                     }
 
-                    newArrow.Direction = Convert.ToInt32(arrow.Element("direction").Value);
-                    newArrow.Position = new Vector2(Convert.ToSingle(arrow.Element("xposition").Value), Convert.ToSingle(arrow.Element("yposition").Value));
+                    newArrow.Direction = Convert.ToSingle(arrow.Element("direction").Value);
+                    newArrow.speed = Convert.ToSingle(arrow.Element("speed").Value);
+                    newArrow.Position = new Vector2(Convert.ToSingle(arrow.Element("xposition").Value) * xRatio, Convert.ToSingle(arrow.Element("yposition").Value) * yRatio);
+                    newArrow.initialPosition = newArrow.position;
+                    newArrow.Source = new Rectangle((int)newArrow.position.X, (int)newArrow.position.Y, newArrow.Texture.Width, newArrow.Texture.Height);
                     newLevel.arrows.Add(newArrow);
 
                 }
@@ -242,6 +248,7 @@ namespace RainbowDragon.Core.Levels
             //also code to check if game over and send respective message to ingameScreen
             //also call methods that check if more arrows need to be sent or more pickups
             //collision detection maybe should have its own method and be called separately from ingamescreen
+            currentLevel.Update(gameTime);
 
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -283,21 +290,60 @@ namespace RainbowDragon.Core.Levels
                         if (arrow.GetType() == typeof(SlowArrow))
                         {
                             player.Slow();
+                            arrow.position = arrow.initialPosition;
                         }
                         else if (arrow.GetType() == typeof(InverseArrow))
                         {
                             player.Inverse();
+                            arrow.position = arrow.initialPosition;
                         }
                         else if (arrow.GetType() == typeof(PoisonArrow))
                         {
                             player.Poison();
+                            arrow.position = arrow.initialPosition;
                         }
                         else
                         {
                             player.AddToRainbowMeter(-10);
+                            arrow.position = arrow.initialPosition;
+                            //currentLevel.deadArrows.Add(arrow);
                         }
                     }
+
+                    if (arrow.Direction >= 0 && arrow.Direction <= 90)
+                    {
+                        if (arrow.position.X >= screenWidth + arrow.Source.Width/2 || arrow.position.Y >= screenHeight + arrow.Source.Height/2)
+                        {
+                            arrow.RestartPosition();
+                        }
+                    }
+                    else if (arrow.Direction >= 90 && arrow.Direction <= 180)
+                    {
+                        if (arrow.position.X < 0 - arrow.Source.Width / 2 || arrow.position.Y >= screenHeight + arrow.Source.Height / 2)
+                        {
+                            arrow.RestartPosition();
+                        }
+                    }
+                    else if (arrow.Direction >= 180 && arrow.Direction <= 270)
+                    {
+                        if (arrow.position.X < 0 - arrow.Source.Width / 2 || arrow.position.Y < 0 - arrow.Source.Height / 2)
+                        {
+                            arrow.RestartPosition();
+                        }
+                    }
+                    else if (arrow.Direction >= 270 && arrow.Direction <= 360)
+                    {
+                        if (arrow.position.X >= screenWidth + arrow.Source.Width / 2 || arrow.position.Y < 0 - arrow.Source.Height / 2)
+                        {
+                            arrow.RestartPosition();
+                        }
+                    }
+
+
+
                 }
+
+                //currentLevel.RemoveArrows();
             }
         }
 
