@@ -37,7 +37,7 @@ namespace RainbowDragon.Core.Player
                 position.Y += (float)(moveAmount * Math.Sin(rotation));
 
                 //Update Move List
-                moves.Push(new Move(speed, rotation));
+                moves.Push(new Move(speed, rotation, Position));
             }
 
             if (position.X - size.Width / 2 > 1366)

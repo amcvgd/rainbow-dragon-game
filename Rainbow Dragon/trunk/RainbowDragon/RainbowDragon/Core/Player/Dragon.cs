@@ -117,6 +117,9 @@ namespace RainbowDragon.Core.Player
             //Control the Length of the Rainbow
             HandleRainbow();
 
+            //Update Buff Timers
+            UpdateTimers(gameTime);
+
             foreach (DragonPart part in dragon)
             {
                 part.Update(gameTime);
@@ -245,8 +248,6 @@ namespace RainbowDragon.Core.Player
 
                 rainbow.Add(new FollowingSprite(father, rainbowTexture, father.position, .5f, father.speed, father.rotation));
             }
-
-            Console.WriteLine("The number of sections is: " + sections + "\nThe current Rainbow count is: " + rainbow.Count);
         }
 
         public void AddToRainbowMeter(int amt)
@@ -320,7 +321,7 @@ namespace RainbowDragon.Core.Player
         {
             //Speed Boost Powerup
             if (speedBoostTimer > 0)
-                speedBoostTimer -= gameTime.ElapsedGameTime.Seconds;
+                speedBoostTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (speedBoostTimer < 0)
             {
                 speedBoostTimer = 0;
@@ -329,7 +330,7 @@ namespace RainbowDragon.Core.Player
 
             //Invincibility Powerup
             if (invinciTimer > 0)
-                invinciTimer -= gameTime.ElapsedGameTime.Seconds;
+                invinciTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (invinciTimer < 0)
             {
                 invinciTimer = 0;
@@ -338,7 +339,7 @@ namespace RainbowDragon.Core.Player
 
             //Slow Debuff
             if (slowTimer > 0)
-                slowTimer -= gameTime.ElapsedGameTime.Seconds;
+                slowTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (slowTimer < 0)
             {
                 slowTimer = 0;
@@ -347,24 +348,26 @@ namespace RainbowDragon.Core.Player
 
             //Inverse Debuff
             if (inverseTimer > 0)
-                inverseTimer -= gameTime.ElapsedGameTime.Seconds;
+                inverseTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (inverseTimer < 0)
             {
                 inverseTimer = 0;
                 head.inversed = false;
             }
+            //Console.WriteLine("Inverse Timer is: " + inverseTimer);
 
             //Poison Debuff
             if (poisonTimer > 0)
-                poisonTimer -= gameTime.ElapsedGameTime.Seconds;
+                poisonTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (poisonTimer < 0)
             {
                 poisonTimer = 0;
                 poiHitter = 0;
             }
+            //Console.WriteLine("Poison Timer is: " + poisonTimer);
 
             if (poiHitter > 0)
-                poiHitter -= gameTime.ElapsedGameTime.Seconds;
+                poiHitter -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (poiHitter < 0)
             {
                 AddToRainbowMeter(-2);

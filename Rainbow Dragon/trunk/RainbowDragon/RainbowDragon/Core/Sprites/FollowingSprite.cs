@@ -30,14 +30,10 @@ namespace RainbowDragon.Core.Sprites
             {
                 rotation = nextMove.rotation;
                 speed = nextMove.speed;
-
-                int moveAmount = (int)(speed * gameTime.ElapsedGameTime.TotalSeconds);
-
-                position.X += (float)(moveAmount * Math.Cos(rotation));
-                position.Y += (float)(moveAmount * Math.Sin(rotation));
+                position = nextMove.position;
 
                 //Update Move List
-                moves.Push(new Move(speed, rotation));
+                moves.Push(new Move(speed, rotation, Position));
             }
         }
 
