@@ -19,7 +19,7 @@ namespace RainbowDragon.Core.Sprites
             float rotation = 0):base(texture, position, scale, speed, rotation)
         {
             this.father = father;
-            moves = new MoveQueue(10);
+            moves = new MoveQueue(2);
         }
 
         public override void Update(GameTime gameTime)
