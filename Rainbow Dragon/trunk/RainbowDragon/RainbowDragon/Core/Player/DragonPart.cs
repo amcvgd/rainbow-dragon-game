@@ -19,7 +19,7 @@ namespace RainbowDragon.Core.Player
             : base(father, texture, position, scale, speed, rotation) 
         {
             this.father = father;
-            moves = new MoveQueue(15);
+            moves = new MoveQueue(10);
         }
 
         public override void Update(GameTime gameTime)

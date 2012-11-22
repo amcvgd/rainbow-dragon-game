@@ -139,14 +139,15 @@ namespace RainbowDragon.Core.Player
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            foreach (DragonPart part in dragon)
-            {
-                part.Draw(spriteBatch);
-            }
 
             foreach (FollowingSprite sec in rainbow)
             {
                 sec.Draw(spriteBatch);
+            }
+            
+            foreach (DragonPart part in dragon)
+            {
+                part.Draw(spriteBatch);
             }
 
             if (isCharging)
@@ -176,6 +177,7 @@ namespace RainbowDragon.Core.Player
                     if (IsFullyCharged())
                     {
                         //We are fully charged
+                        particleEngine.Emit();
                     }
                     else if (rainbowMeter != 0)
                     {
@@ -209,7 +211,6 @@ namespace RainbowDragon.Core.Player
                     charge = 10;
                     rainbowMeter -= 10;
                     isCharging = true;
-                    particleEngine.Emit();
                 }
             }
 
@@ -222,7 +223,7 @@ namespace RainbowDragon.Core.Player
         /// </summary>
         public void HandleRainbow()
         {
-           int sections = (int)(rainbowMeter) / 10;
+           int sections = (int)(rainbowMeter)/2;
                 
             //If this occurs, then our rainbow trail is up-to-date
             if (sections == rainbow.Count) return;
@@ -242,8 +243,10 @@ namespace RainbowDragon.Core.Player
                 else
                     father = rainbow[rainbow.Count - 1];
 
-                rainbow.Add(new FollowingSprite(father, rainbowTexture, father.position, 0.2f, father.speed, father.rotation));
+                rainbow.Add(new FollowingSprite(father, rainbowTexture, father.position, .5f, father.speed, father.rotation));
             }
+
+            Console.WriteLine("The number of sections is: " + sections + "\nThe current Rainbow count is: " + rainbow.Count);
         }
 
         public void AddToRainbowMeter(int amt)

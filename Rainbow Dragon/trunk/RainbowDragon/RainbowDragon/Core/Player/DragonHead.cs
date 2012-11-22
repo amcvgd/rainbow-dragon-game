@@ -15,7 +15,9 @@ namespace RainbowDragon.Core.Player
         public bool inversed = false;
         
         public DragonHead(Texture2D texture, Vector2 position, float scale = 1, float speed = 300, float rotation = 0)
-            : base(null, texture, position, scale, speed, rotation) { }
+            : base(null, texture, position, scale, speed, rotation) {
+                moves = new MoveQueue(15);
+        }
 
         public override void Update(GameTime gameTime)
         {
