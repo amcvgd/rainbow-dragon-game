@@ -56,5 +56,14 @@ namespace RainbowDragon.HelperClasses
             else
                 return null;
         }
+
+        public void SetCapacity(int capacity)
+        {
+            this.capacity = capacity;
+            while (this.size > capacity)
+            {
+                Pop();
+            }
+        }
     }
 }

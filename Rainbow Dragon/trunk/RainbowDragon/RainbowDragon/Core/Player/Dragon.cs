@@ -88,10 +88,11 @@ namespace RainbowDragon.Core.Player
             }
             dragon.Add(new DragonPart(dragon[bodySize], 
                 contentLoader.AddTexture2(Constants.DRAGON_TAIL, Constants.DRAGON_TAIL_PATH), position, .75f));
+            dragon[dragon.Count - 1].moves = new MoveQueue(4);
             
             //Rainbow Creation
             rainbowTexture = contentLoader.AddTexture2(Constants.RAINBOW_PART, Constants.RAINBOW_PART_PATH);
-            rainbowMeter = 200;
+            rainbowMeter = 0;
 
             circle.Initialize(contentLoader.AddTexture2(Constants.RAINBOW_CIRCLE, Constants.EFFECT_BASE_PATH + Constants.RAINBOW_CIRCLE),
                 new Rectangle((int)head.position.X + (Charge * chargeMultiplier) / 2, (int)head.position.Y + (Charge * chargeMultiplier) / 2, Charge * chargeMultiplier, Charge * chargeMultiplier));
@@ -153,6 +154,11 @@ namespace RainbowDragon.Core.Player
                 part.Draw(spriteBatch);
             }
 
+            for (int i = dragon.Count-1; i > 0; i--)
+            {
+                dragon[i].Draw(spriteBatch);
+            }
+
             if (isCharging)
             {
                 circle.UpdateRectangle(new Rectangle((int)head.position.X - (Charge * chargeMultiplier) / 2, (int)head.position.Y - (Charge * chargeMultiplier) / 2, Charge * chargeMultiplier, Charge * chargeMultiplier));
@@ -180,7 +186,6 @@ namespace RainbowDragon.Core.Player
                     if (IsFullyCharged())
                     {
                         //We are fully charged
-                        particleEngine.Emit();
                     }
                     else if (rainbowMeter != 0)
                     {
@@ -197,7 +202,6 @@ namespace RainbowDragon.Core.Player
                     //We are no longer charging, so reset charge to 0
                     isCharging = false;
                     charge = 0;
-                    particleEngine.StopEmitting();
                 }
             }
             else if ((aKeyboard.IsKeyDown(Keys.Space) && !prevKeyState.IsKeyDown(Keys.Space)) ||
@@ -246,7 +250,9 @@ namespace RainbowDragon.Core.Player
                 else
                     father = rainbow[rainbow.Count - 1];
 
-                rainbow.Add(new FollowingSprite(father, rainbowTexture, father.position, .5f, father.speed, father.rotation));
+                father.moves = new MoveQueue(father.moves.capacity);
+
+                rainbow.Add(new FollowingSprite(father, rainbowTexture, father.Position, .5f, father.speed, father.rotation));
             }
         }
 
@@ -284,6 +290,20 @@ namespace RainbowDragon.Core.Player
         //BUFFS
         public void SpeedBoost()
         {
+            if (slowTimer > 0)
+            {
+                slowTimer = -1;
+                return;
+            }
+            
+            for (int i = 0; i <= dragon.Count - 1; i++)
+            {
+                if (i == dragon.Count-1)
+                    dragon[i].moves.SetCapacity(2);
+                else
+                    dragon[i].moves.SetCapacity(6);
+            }
+
             if (speedBoostTimer == 0)
                 head.speed *= 2;
             speedBoostTimer = 7.5f;
@@ -291,14 +311,34 @@ namespace RainbowDragon.Core.Player
 
         public void Invinciblility()
         {
+            particleEngine.Emit();
             if (invinciTimer == 0)
                 invincible = true;
-            invinciTimer = 3;
+            invinciTimer = 7;
+        }
+
+        public bool IsInvincible()
+        {
+            return invincible;
         }
 
         //DEBUFFS
         public void Slow()
         {
+            if (speedBoostTimer > 0)
+            {
+                speedBoostTimer = -1;
+                return;
+            }
+            
+            for (int i = 0; i <= dragon.Count - 1; i++)
+            {
+               if (i == dragon.Count - 1)
+                    dragon[i].moves.SetCapacity(8);
+                else
+                    dragon[i].moves.SetCapacity(30);
+            }
+
             if (slowTimer == 0)
                 head.speed /= 2;
             slowTimer = 7.5f;
@@ -317,6 +357,17 @@ namespace RainbowDragon.Core.Player
             poiHitter = 1;
         }
 
+        public void ResetCapacity()
+        {
+            for (int i = 0; i <= dragon.Count - 1; i++)
+            {
+                if (i == dragon.Count - 1)
+                    dragon[i].moves.SetCapacity(4);
+                else
+                    dragon[i].moves.SetCapacity(12);
+            }
+        }
+
         public void UpdateTimers(GameTime gameTime)
         {
             //Speed Boost Powerup
@@ -326,6 +377,7 @@ namespace RainbowDragon.Core.Player
             {
                 speedBoostTimer = 0;
                 head.speed /= 2;
+                ResetCapacity();
             }
 
             //Invincibility Powerup
@@ -335,6 +387,7 @@ namespace RainbowDragon.Core.Player
             {
                 invinciTimer = 0;
                 invincible = false;
+                particleEngine.StopEmitting();
             }
 
             //Slow Debuff
@@ -344,6 +397,7 @@ namespace RainbowDragon.Core.Player
             {
                 slowTimer = 0;
                 head.speed *= 2;
+                ResetCapacity();
             }
 
             //Inverse Debuff

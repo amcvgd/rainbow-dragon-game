@@ -94,11 +94,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Player\dragon_head.png">
-      <Name>dragon_head</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Player\dragon_tail.png">
       <Name>dragon_tail</Name>
       <Importer>TextureImporter</Importer>
@@ -156,6 +151,11 @@
     </Compile>
     <Compile Include="Pickups\invincible_sun.png">
       <Name>invincible_sun</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Player\dragon_head.png">
+      <Name>dragon_head</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -12,7 +12,7 @@ namespace RainbowDragon.Core.Sprites
 {
     class FollowingSprite:MovingSprite
     {
-        protected MoveQueue moves;
+        public MoveQueue moves;
         protected FollowingSprite father;
 
         public FollowingSprite(FollowingSprite father, Texture2D texture, Vector2 position, float scale = 1, float speed = 0, 

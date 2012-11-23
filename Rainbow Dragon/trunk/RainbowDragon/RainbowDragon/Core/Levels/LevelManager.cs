@@ -303,29 +303,32 @@ namespace RainbowDragon.Core.Levels
                 //Check for collisions with arrows
                 foreach (Arrow arrow in currentLevel.arrows)
                 {
-                    if (part.Hitbox.Intersects(arrow.Hitbox))
+                    if (!player.IsInvincible())
                     {
-                        if (arrow.GetType() == typeof(SlowArrow))
+                        if (part.Hitbox.Intersects(arrow.Hitbox))
                         {
-                            player.Slow();
-                            arrow.position = arrow.initialPosition;
-                        }
-                        else if (arrow.GetType() == typeof(InverseArrow))
-                        {
-                            player.Inverse();
-                            arrow.position = arrow.initialPosition;
-                        }
-                        else if (arrow.GetType() == typeof(PoisonArrow))
-                        {
-                            player.Poison();
-                            arrow.position = arrow.initialPosition;
-                        }
-                        else
-                        {
-                            player.AddToRainbowMeter(-10);
-                            arrow.position = arrow.initialPosition;
-                            //currentLevel.deadArrows.Add(arrow);
-                        }
+                            if (arrow.GetType() == typeof(SlowArrow))
+                            {
+                                player.Slow();
+                                arrow.position = arrow.initialPosition;
+                            }
+                            else if (arrow.GetType() == typeof(InverseArrow))
+                            {
+                                player.Inverse();
+                                arrow.position = arrow.initialPosition;
+                            }
+                            else if (arrow.GetType() == typeof(PoisonArrow))
+                            {
+                                player.Poison();
+                                arrow.position = arrow.initialPosition;
+                            }
+                            else
+                            {
+                                player.AddToRainbowMeter(-10);
+                                arrow.position = arrow.initialPosition;
+                                //currentLevel.deadArrows.Add(arrow);
+                            }
+                        } 
                     }
 
                     if (arrow.Direction >= 0 && arrow.Direction <= 90)
