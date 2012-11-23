@@ -19,7 +19,7 @@ namespace RainbowDragon.Core.Player
             : base(father, texture, position, scale, speed, rotation) 
         {
             this.father = father;
-            moves = new MoveQueue(10);
+            moves = new MoveQueue(12);
         }
 
         public override void Update(GameTime gameTime)
@@ -30,6 +30,7 @@ namespace RainbowDragon.Core.Player
             {
                 rotation = nextMove.rotation;
                 speed = nextMove.speed;
+                position = nextMove.position;
 
                 int moveAmount = (int)(speed * gameTime.ElapsedGameTime.TotalSeconds);
 
@@ -39,15 +40,6 @@ namespace RainbowDragon.Core.Player
                 //Update Move List
                 moves.Push(new Move(speed, rotation, Position));
             }
-
-            if (position.X - size.Width / 2 > 1366)
-                position.X = 0;
-            if (position.X + size.Width / 2 < 0)
-                position.X = 1366;
-            if (position.Y + size.Height / 2 < 0)
-                position.Y = 768;
-            if (position.Y - size.Height / 2 > 768)
-                position.Y = 0;
         }
 
         public void SetFather(DragonPart father)

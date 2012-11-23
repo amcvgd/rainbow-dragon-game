@@ -16,7 +16,7 @@ namespace RainbowDragon.Core.Player
         
         public DragonHead(Texture2D texture, Vector2 position, float scale = 1, float speed = 300, float rotation = 0)
             : base(null, texture, position, scale, speed, rotation) {
-                moves = new MoveQueue(15);
+                moves = new MoveQueue(12);
         }
 
         public override void Update(GameTime gameTime)
@@ -45,13 +45,13 @@ namespace RainbowDragon.Core.Player
             moves.Push(new Move(speed, rotation, Position));
 
             if (position.X - size.Width / 2 > 1366)
-                position.X = 0;
+                position.X = -size.Width / 2;
             if (position.X + size.Width / 2 < 0)
-                position.X = 1366;
+                position.X = 1366 + size.Width / 2;
             if (position.Y + size.Height / 2 < 0)
-                position.Y = 768;
+                position.Y = 768 + size.Height / 2;
             if (position.Y - size.Height / 2 > 768)
-                position.Y = 0;
+                position.Y = -size.Height / 2;
         }
     }
 }
