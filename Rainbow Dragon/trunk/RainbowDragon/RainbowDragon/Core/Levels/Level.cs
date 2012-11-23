@@ -29,9 +29,11 @@ namespace RainbowDragon.Core.Levels
         List<Circle> circles;
         ContentLoader loader;
         GraphicsDevice graphics;
+        bool circleAdded = false;
+        LevelManager manager;
 
 
-        public Level(ContentLoader contentLoader, GraphicsDevice graphs)
+        public Level(ContentLoader contentLoader, GraphicsDevice graphs, LevelManager manager)
         {
             suns = new List<Sun>();
             arrows = new List<Arrow>();
@@ -41,14 +43,22 @@ namespace RainbowDragon.Core.Levels
             circleTarget = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
             mainTarget = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
             toColorEffect = contentLoader.AddEffect("to_color_effect");
-            Messenger<int, Vector2>.AddListener("add circle", AddCircle);
+           // Messenger<int, Vector2>.AddListener("add circle", AddCircle);
             //AddCircle(10, new Vector2(300, 300));
             deadArrows = new List<Arrow>();
-
+            this.manager = manager;
 
         }
 
+        public void Initialize()
+        {
+            Messenger<int, Vector2>.AddListener("add circle", AddCircle);
+        }
 
+        public void Kill()
+        {
+            Messenger<int, Vector2>.RemoveListener("add circle", AddCircle);
+        }
 
         public void Update(GameTime gameTime)
         {
@@ -58,6 +68,11 @@ namespace RainbowDragon.Core.Levels
                 arrow.Update(gameTime);
             }
 
+
+            foreach (Sun sun in suns)
+            {
+                sun.Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -75,9 +90,10 @@ namespace RainbowDragon.Core.Levels
 
                 circle.Draw(spriteBatch);
             }
-
+            
             spriteBatch.End();
-
+            graphics.SetRenderTarget(null);
+            
             graphics.SetRenderTarget(mainTarget);
             graphics.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
@@ -100,7 +116,20 @@ namespace RainbowDragon.Core.Levels
             {
                 arrow.Draw(spriteBatch);
             }
-            
+
+            foreach (Sun sun in suns)
+            {
+                sun.Draw(spriteBatch);
+            }
+
+            if (circleAdded)
+            {
+                if (IsBackgroundColored(circleTarget) > 10)
+                {
+                    manager.IncreaseLevel();
+                }
+                circleAdded = false;
+            }
 
             //spriteBatch.Draw(loader.GetTexture(Constants.CHARGE_FIELD), new Vector2(300, 300), Color.White);
 
@@ -118,11 +147,35 @@ namespace RainbowDragon.Core.Levels
             deadArrows.Clear();
         }
 
+        public int IsBackgroundColored(Texture2D bg)
+        {
+            int size = circleTarget.Width * circleTarget.Height;
+            Color[] buffer = new Color[size];
+            bg.GetData(0, new Rectangle(0, 0, circleTarget.Width, circleTarget.Height), buffer, 0, size);
+
+            //if (buffer.All(c => c == Color.White))
+                //return true;
+            int count = 0;
+            int percentage = 0;
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                if (buffer[i] == Color.Black)
+                {
+                    count++;
+                }
+            }
+
+            percentage = count * 100 / size;
+
+            return percentage;
+        }
+
         public void AddCircle(int radius, Vector2 position)
         {
             Circle newcircle = new Circle();
             newcircle.Initialize(loader.GetTexture(Constants.CHARGE_FIELD), new Rectangle((int)position.X - radius/2, (int)position.Y-radius/2, radius, radius));
             circles.Add(newcircle);
+            circleAdded = true;
         }
 
 

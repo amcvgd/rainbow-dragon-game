@@ -50,7 +50,7 @@ namespace RainbowDragon.Core.Levels
 
             foreach (XElement level in doc.Descendants("level"))
             {
-                Level newLevel = new Level(contentLoader, game.GraphicsDevice);
+                Level newLevel = new Level(contentLoader, game.GraphicsDevice, this);
                 newLevel.levelNumber = Convert.ToInt32(level.Element("number").Value);
                 newLevel.time = Convert.ToInt32(level.Element("time").Value);
                 foreach (XElement sun in level.Descendants("sun"))
@@ -83,9 +83,9 @@ namespace RainbowDragon.Core.Levels
 
                     }
 
-                    newSun.Position = new Vector2(Convert.ToSingle(sun.Element("xposition").Value), Convert.ToSingle(sun.Element("yposition").Value));
+                    newSun.Position = new Vector2(Convert.ToSingle(sun.Element("xposition").Value) * xRatio, Convert.ToSingle(sun.Element("yposition").Value) * yRatio);
                     newSun.Size = Convert.ToInt32(sun.Element("size").Value);
-
+                    newSun.Source = new Rectangle((int)newSun.position.X, (int)newSun.position.Y, newSun.Size * 100, newSun.Size * 100);
                     newLevel.suns.Add(newSun);
 
                 }
@@ -145,6 +145,8 @@ namespace RainbowDragon.Core.Levels
 
 
             currentLevel = GetCurrentLevel();
+            currentLevel.Initialize();
+            game.StartTransition(currentLevelNumber);
             #region Old Version XML parser
             /*
             levels = (from level in doc.Descendants("level")
@@ -218,7 +220,7 @@ namespace RainbowDragon.Core.Levels
 
         public Level GetCurrentLevel()
         {
-            Level tempNewLevel = new Level(contentLoader, game.GraphicsDevice);
+            Level tempNewLevel = new Level(contentLoader, game.GraphicsDevice, this);
             if (levels[0].levelNumber == currentLevelNumber)
             {
                 tempNewLevel = levels[0];
@@ -257,6 +259,18 @@ namespace RainbowDragon.Core.Levels
 
         }
 
+        public void IncreaseLevel()
+        {
+            if (currentLevelNumber < levels.Count)
+            {
+                currentLevel.Kill();
+                currentLevelNumber++;
+                currentLevel = GetCurrentLevel();
+                currentLevel.Initialize();
+                game.StartTransition(currentLevelNumber);
+            }
+        }
+
         public void CheckForCollision(Dragon player)
         {
             //Check each part of the dragon
@@ -265,19 +279,23 @@ namespace RainbowDragon.Core.Levels
                 //Check for collisions with suns
                 foreach (Sun sun in currentLevel.suns)
                 {
-                    if (part.Hitbox.Intersects(sun.Hitbox))
+                    if (!sun.isInvisible)
                     {
-                        if (sun.GetType() == typeof(AcceleratingSun))
+                        if (part.Hitbox.Intersects(sun.Hitbox))
                         {
-                            player.SpeedBoost();
-                        }
-                        else if (sun.GetType() == typeof(InvincibleSun))
-                        {
-                            player.Invinciblility();
-                        }
-                        else
-                        {
-                            player.AddToRainbowMeter(5 * sun.Size);      //The size is taken into account when adding to the meter
+                            if (sun.GetType() == typeof(AcceleratingSun))
+                            {
+                                player.SpeedBoost();
+                            }
+                            else if (sun.GetType() == typeof(InvincibleSun))
+                            {
+                                player.Invinciblility();
+                            }
+                            else
+                            {
+                                player.AddToRainbowMeter(5 * sun.Size);      //The size is taken into account when adding to the meter
+                            }
+                            sun.DisappearSun();
                         }
                     }
                 }

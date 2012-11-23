@@ -35,7 +35,7 @@
         <xposition>7</xposition>
         <yposition>10</yposition>
         <direction>280</direction>
-        <speed>1</speed>
+        <speed>5</speed>
       </arrow>
 
 
@@ -43,14 +43,94 @@
     <suns>
       <sun>
         <size>1</size>
-        <type>normal</type>
+        <type>accelerating_sun</type>
         <xposition>1</xposition>
         <yposition>3</yposition>
       </sun>
+      <sun>
+        <size>2</size>
+        <type>invincible_sun</type>
+        <xposition>4</xposition>
+        <yposition>8</yposition>
+      </sun>
+      <sun>
+        <size>3</size>
+        <type>normal_sun</type>
+        <xposition>10</xposition>
+        <yposition>6</yposition>
+      </sun>
+      
 
     </suns>
     <time>5</time>
     <background>china3</background>
+  </level>
+
+  <level>
+    <number>2</number>
+    <arrows>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>17</xposition>
+        <yposition>1</yposition>
+        <direction>180</direction>
+        <speed>1</speed>
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>3</xposition>
+        <yposition>-1</yposition>
+        <direction>60</direction>
+        <speed>2</speed>
+      </arrow>
+      <arrow >
+        <type>poison_arrow</type>
+        <xposition>7</xposition>
+        <yposition>-1</yposition>
+        <direction>120</direction>
+        <speed>1</speed>
+      </arrow>
+      <arrow >
+        <type>inverse_arrow</type>
+        <xposition>-1</xposition>
+        <yposition>4</yposition>
+        <direction>0</direction>
+        <speed>2</speed>
+      </arrow>
+      <arrow >
+        <type>poison_arrow</type>
+        <xposition>7</xposition>
+        <yposition>10</yposition>
+        <direction>280</direction>
+        <speed>5</speed>
+      </arrow>
+
+
+    </arrows>
+    <suns>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>1</xposition>
+        <yposition>3</yposition>
+      </sun>
+      <sun>
+        <size>2</size>
+        <type>normal_sun</type>
+        <xposition>4</xposition>
+        <yposition>8</yposition>
+      </sun>
+      <sun>
+        <size>3</size>
+        <type>normal_sun</type>
+        <xposition>10</xposition>
+        <yposition>6</yposition>
+      </sun>
+
+
+    </suns>
+    <time>5</time>
+    <background>flowerfield</background>
   </level>
 
 </levels>

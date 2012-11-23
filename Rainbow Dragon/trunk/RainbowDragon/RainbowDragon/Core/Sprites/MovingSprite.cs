@@ -11,7 +11,8 @@ namespace RainbowDragon.Core.Sprites
     {
         public float speed {get; set;}
         public float rotation{ get; set; }
-
+        protected float alpha = 1;
+        protected Color color = Color.White;
         public Rectangle Hitbox
         {
             get { return new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height); }
@@ -32,7 +33,7 @@ namespace RainbowDragon.Core.Sprites
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height),
-                new Rectangle(0, 0, texture.Width, texture.Height), Color.White, rotation,
+                new Rectangle(0, 0, texture.Width, texture.Height), color * alpha, rotation,
                 new Vector2(texture.Width / 2, texture.Height / 2), SpriteEffects.None, 0);
         }
         
