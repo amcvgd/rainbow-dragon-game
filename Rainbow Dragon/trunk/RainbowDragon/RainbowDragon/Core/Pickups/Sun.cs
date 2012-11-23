@@ -11,15 +11,20 @@ namespace RainbowDragon.Core.Pickups
     class Sun : MovingSprite
     {
         public string type { get; set; }
-
+        public bool isInvisible = false;
         public Sun(Texture2D texture, Vector2 position, int size, string type)
             : base(texture, position, size)
         {
             this.type = type;
+
         }
+
+
 
         public Sun()
         {
+
+            
 
         }
         protected int size;
@@ -27,7 +32,30 @@ namespace RainbowDragon.Core.Pickups
         //protected Vector2 position;
         public int Size { get { return size; } set { size = value; } }
 
-        
+
+        public override void Update(GameTime gameTime)
+        {
+            
+            //base.Update(gameTime);
+            if (isInvisible)
+            {
+                alpha += (float)1 / (100 * size); //TODO: change logic
+                if (alpha >= 1)
+                    isInvisible = false;
+            }
+            else
+            {
+                rotation += MathHelper.ToRadians(1);
+            }
+        }
+
+       
+        public void DisappearSun()
+        {
+
+            alpha = 0;
+            isInvisible = true;
+        }
 
     }
 }

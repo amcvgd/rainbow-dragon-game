@@ -13,6 +13,8 @@ namespace RainbowDragon.HelperClasses
 
         public const int GAME_STATE_OVER = 2;
 
+        public const int GAME_STATE_TRANSITION = 3;
+
         //Directions
         public const int LEFT = 0;
         public const int RIGHT = 1;

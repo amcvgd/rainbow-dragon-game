@@ -27,6 +27,7 @@ namespace RainbowDragon
         StartScreen startScreen; 
         InGameScreen inGameScreen;
         GameoverScreen gameOverScreen;
+        LevelTransition transitionScreen;
         public int CurrentScreenWidth { get; set; }
         public int CurrentScreenHeight { get; set; }
 
@@ -59,6 +60,7 @@ namespace RainbowDragon
             inGameScreen = new InGameScreen(this);
             startScreen = new StartScreen();
             gameOverScreen = new GameoverScreen();
+            
             inGameScreen.Initialize();
             base.Initialize();
         }
@@ -110,6 +112,10 @@ namespace RainbowDragon
             {
                 gameOverScreen.Update(gameTime);
             }
+            else if (currentGameState == Constants.GAME_STATE_TRANSITION)
+            {
+                transitionScreen.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -137,9 +143,24 @@ namespace RainbowDragon
             {
                 gameOverScreen.Draw(spriteBatch);
             }
+            else if (currentGameState == Constants.GAME_STATE_TRANSITION)
+            {
+                transitionScreen.Draw(spriteBatch);
+            }
 
             base.Draw(gameTime);
             
+        }
+
+        public void StartTransition(int currentLevel)
+        {
+            transitionScreen = new LevelTransition(this, currentLevel);
+            ChangeState(Constants.GAME_STATE_TRANSITION);
+        }
+        public void ChangeState(int newState)
+        {
+            currentGameState = newState;
+
         }
     }
 }
