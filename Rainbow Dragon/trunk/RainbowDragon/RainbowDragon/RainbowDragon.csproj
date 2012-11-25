@@ -131,6 +131,7 @@
     <Compile Include="Core\Screens\GameoverScreen.cs" />
     <Compile Include="Core\Screens\InGameScreen.cs" />
     <Compile Include="Core\Screens\LevelTransition.cs" />
+    <Compile Include="Core\Screens\PauseScreen.cs" />
     <Compile Include="Core\Screens\StartScreen.cs" />
     <Compile Include="Core\Sprites\FollowingSprite.cs" />
     <Compile Include="Core\Sprites\MovingSprite.cs" />
