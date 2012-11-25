@@ -40,9 +40,9 @@
       <arrow>
         <type>slow_arrow</type>
         <xposition>8</xposition>
-        <yposition>9</yposition>
+        <yposition>12</yposition>
         <direction>270</direction>
-        <speed>5</speed>
+        <speed>.5</speed>
       </arrow>
 
     </arrows>

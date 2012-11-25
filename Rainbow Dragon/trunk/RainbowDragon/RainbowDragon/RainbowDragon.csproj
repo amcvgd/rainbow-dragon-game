@@ -143,6 +143,7 @@
     <Compile Include="HelperClasses\Messenger.cs" />
     <Compile Include="HelperClasses\Move.cs" />
     <Compile Include="HelperClasses\MoveQueue.cs" />
+    <Compile Include="HelperClasses\MusicPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

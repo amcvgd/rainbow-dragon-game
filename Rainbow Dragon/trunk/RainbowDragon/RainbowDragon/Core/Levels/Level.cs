@@ -29,6 +29,7 @@ namespace RainbowDragon.Core.Levels
         Effect toColorEffect;
         List<Circle> circles;
         ContentLoader loader;
+        MusicPlayer mPlayer;
         GraphicsDevice graphics;
         bool circleAdded = false;
         LevelManager manager;
@@ -37,12 +38,13 @@ namespace RainbowDragon.Core.Levels
         
 
 
-        public Level(ContentLoader contentLoader, GraphicsDevice graphs, LevelManager manager)
+        public Level(ContentLoader contentLoader, GraphicsDevice graphs, LevelManager manager, MusicPlayer musicPlayer)
         {
             suns = new List<Sun>();
             arrows = new List<Arrow>();
             circles = new List<Circle>();
             loader = contentLoader;
+            mPlayer = musicPlayer;
             graphics = graphs;
             circleTarget = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
             mainTarget = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
@@ -58,11 +60,13 @@ namespace RainbowDragon.Core.Levels
         public void Initialize()
         {
             Messenger<int, Vector2>.AddListener("add circle", AddCircle);
+            mPlayer.PlaySong(Constants.IN_GAME_SONG);
         }
 
         public void Kill()
         {
             Messenger<int, Vector2>.RemoveListener("add circle", AddCircle);
+            mPlayer.StopSong();
         }
 
         public void Update(GameTime gameTime)
@@ -70,7 +74,7 @@ namespace RainbowDragon.Core.Levels
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 isPaused = true;
-
+                mPlayer.PauseSong();
             }
 
             foreach (Arrow arrow in arrows)
@@ -84,6 +88,9 @@ namespace RainbowDragon.Core.Levels
             {
                 sun.Update(gameTime);
             }
+
+            if (!isPaused && !mPlayer.IsSongPlaying())
+                mPlayer.ResumeSong();
         }
 
         public void Draw(SpriteBatch spriteBatch)

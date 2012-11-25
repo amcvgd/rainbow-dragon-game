@@ -21,17 +21,18 @@ namespace RainbowDragon.Core.Levels
         List<Level> levels;
         Level currentLevel;
         ContentLoader contentLoader;
+        MusicPlayer musicPlayer;
         int screenWidth;
         int screenHeight;
         Game1 game;
         float xRatio;
         float yRatio;
-        public LevelManager(ContentLoader loader, Game1 game)
+        public LevelManager(ContentLoader loader, Game1 game, MusicPlayer mPlayer)
         {
 
             contentLoader = loader;
             this.game = game;
-            
+            musicPlayer = mPlayer;
 
         }
 
@@ -50,7 +51,7 @@ namespace RainbowDragon.Core.Levels
 
             foreach (XElement level in doc.Descendants("level"))
             {
-                Level newLevel = new Level(contentLoader, game.GraphicsDevice, this);
+                Level newLevel = new Level(contentLoader, game.GraphicsDevice, this, musicPlayer);
                 newLevel.levelNumber = Convert.ToInt32(level.Element("number").Value);
                 newLevel.time = Convert.ToInt32(level.Element("time").Value);
                 foreach (XElement sun in level.Descendants("sun"))
@@ -220,7 +221,7 @@ namespace RainbowDragon.Core.Levels
 
         public Level GetCurrentLevel()
         {
-            Level tempNewLevel = new Level(contentLoader, game.GraphicsDevice, this);
+            Level tempNewLevel = new Level(contentLoader, game.GraphicsDevice, this, musicPlayer);
             if (levels[0].levelNumber == currentLevelNumber)
             {
                 tempNewLevel = levels[0];

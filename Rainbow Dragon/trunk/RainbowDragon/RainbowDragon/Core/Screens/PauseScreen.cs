@@ -20,6 +20,7 @@ namespace RainbowDragon.Core.Screens
         Texture2D arrow;
         Rectangle scrollRect;
         Game1 game;
+        MusicPlayer mPlayer;
         int arrowState;
         Vector2 arrowPosition;
         Vector2 continuePosition;
@@ -30,6 +31,7 @@ namespace RainbowDragon.Core.Screens
         {
             this.inGameTexture = inGameTexture;
             game = game1;
+            mPlayer = new MusicPlayer(game);
             background = game1.Content.Load<Texture2D>("Pause\\scroll");
             continueGame = game1.Content.Load<Texture2D>("Pause\\continue");
             backToMainScreen = game1.Content.Load<Texture2D>("Pause\\mainScreen");
@@ -50,15 +52,14 @@ namespace RainbowDragon.Core.Screens
                     arrowState--;
                     if (arrowState < 0)
                         arrowState = 2;
-
+                    mPlayer.PlaySound(Constants.MENU_MOVE);
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     arrowState++;
                     if (arrowState > 2)
                         arrowState = 0;
-
-
+                    mPlayer.PlaySound(Constants.MENU_MOVE);
                 }
 
                 timeElapsed = 0;
@@ -71,18 +72,21 @@ namespace RainbowDragon.Core.Screens
             {
                 if (arrowState == 0)
                 {
+                    mPlayer.PlaySound(Constants.MENU_SELECT);
                     game.ChangeState(Constants.GAME_STATE_INGAME);
                     game.UnPauseGame();
-                    
                 }
                 else if (arrowState == 1)
                 {
+                    mPlayer.PlaySound(Constants.MENU_SELECT);
                     game.ChangeState(Constants.GAME_STATE_START);
+                    mPlayer.StopSong();
+                    mPlayer.PlaySong(Constants.TITLE_SONG);
                 }
                 else if (arrowState == 2)
                 {
+                    mPlayer.PlaySound(Constants.MENU_SELECT);
                     game.Exit();
-
                 }
 
             }

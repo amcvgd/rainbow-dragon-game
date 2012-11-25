@@ -38,9 +38,10 @@ namespace RainbowDragon.Core.Player
         bool invincible = false;
         
         ContentLoader contentLoader;
+        MusicPlayer mPlayer;
 
         List<Texture2D> particleTextures;
-        ParticleEngine particleEngine;
+        ParticleEngine particleEngine, poisonEngine;
 
 
         Circle circle;
@@ -66,12 +67,13 @@ namespace RainbowDragon.Core.Player
         /// Initializes all of our variables.
         /// Then, creates a head, however many body parts there are, and finally, the tail.
         /// </summary>
-        public Dragon(int bodySize, ContentLoader loader)
+        public Dragon(int bodySize, ContentLoader loader, MusicPlayer musicPlayer)
         {
             this.bodySize = bodySize;
             dragon = new List<DragonPart>();
             rainbow = new List<FollowingSprite>();
             contentLoader = loader;
+            mPlayer = musicPlayer;
             circle = new Circle();
         }
 
@@ -92,7 +94,7 @@ namespace RainbowDragon.Core.Player
             
             //Rainbow Creation
             rainbowTexture = contentLoader.AddTexture2(Constants.RAINBOW_PART, Constants.RAINBOW_PART_PATH);
-            rainbowMeter = 0;
+            rainbowMeter = 30;
 
             circle.Initialize(contentLoader.AddTexture2(Constants.RAINBOW_CIRCLE, Constants.EFFECT_BASE_PATH + Constants.RAINBOW_CIRCLE),
                 new Rectangle((int)head.position.X + (Charge * chargeMultiplier) / 2, (int)head.position.Y + (Charge * chargeMultiplier) / 2, Charge * chargeMultiplier, Charge * chargeMultiplier));
@@ -104,6 +106,10 @@ namespace RainbowDragon.Core.Player
             particleTextures.Add(contentLoader.AddTexture2(Constants.RED_PARTICLE, Constants.PARTICLE_BASE_PATH + Constants.RED_PARTICLE));
             particleEngine = new ParticleEngine(particleTextures, head.Position);
 
+            //Poison Engine Creation
+            particleTextures = new List<Texture2D>();
+            particleTextures.Add(contentLoader.GetTexture(Constants.GREEN_PARTICLE));
+            poisonEngine = new ParticleEngine(particleTextures, head.Position);
         }
 
         /// <summary>
@@ -134,7 +140,8 @@ namespace RainbowDragon.Core.Player
             //Update Particle Engine
             particleEngine.EmitterLocation = head.Position;
             particleEngine.Update();
-
+            poisonEngine.EmitterLocation = head.Position;
+            poisonEngine.Update();
         }
 
         /// <summary>
@@ -169,6 +176,7 @@ namespace RainbowDragon.Core.Player
 
             //Particle Drawing (Uses it's own Additive sprite batch drawing method for cooler color effects)
             particleEngine.Draw(spriteBatch);
+            poisonEngine.Draw(spriteBatch);
         }
 
 
@@ -180,6 +188,9 @@ namespace RainbowDragon.Core.Player
             //If we are currently charging...
             if (isCharging)
             {
+                if (!mPlayer.IsSoundPlaying(Constants.CHARGE_SOUND))
+                    mPlayer.PlaySound(Constants.CHARGE_SOUND);
+
                 //If we are still holding down the fire button
                 if (aKeyboard.IsKeyDown(Keys.Space) || aGamePad.Triggers.Right >= 0.25f)
                 {
@@ -202,6 +213,8 @@ namespace RainbowDragon.Core.Player
                     //We are no longer charging, so reset charge to 0
                     isCharging = false;
                     charge = 0;
+                    mPlayer.StopSound(Constants.CHARGE_SOUND);
+                    mPlayer.PlaySound(Constants.FIRE_SOUND);
                 }
             }
             else if ((aKeyboard.IsKeyDown(Keys.Space) && !prevKeyState.IsKeyDown(Keys.Space)) ||
@@ -260,12 +273,15 @@ namespace RainbowDragon.Core.Player
         {
             if (amt < 0)
             {
-                if (invincible)
-                    return;
-                else if (rainbowMeter == 0)
+                Random r = new Random();
+                mPlayer.PlaySound(Constants.HIT_SOUND + r.Next(1, 4));
+                if (rainbowMeter == 0)
                     return;             //Insert Death Code here.
             }
-
+            else
+            {
+                mPlayer.PlaySound(Constants.GET_SUN_SOUND);
+            }
 
             rainbowMeter += amt;
 
@@ -307,6 +323,7 @@ namespace RainbowDragon.Core.Player
             if (speedBoostTimer == 0)
                 head.speed *= 2;
             speedBoostTimer = 7.5f;
+            mPlayer.PlaySound(Constants.SPEED_SOUND);
         }
 
         public void Invinciblility()
@@ -315,6 +332,7 @@ namespace RainbowDragon.Core.Player
             if (invinciTimer == 0)
                 invincible = true;
             invinciTimer = 7;
+            mPlayer.PlaySound(Constants.INV_SOUND);
         }
 
         public bool IsInvincible()
@@ -342,6 +360,7 @@ namespace RainbowDragon.Core.Player
             if (slowTimer == 0)
                 head.speed /= 2;
             slowTimer = 7.5f;
+            mPlayer.PlaySound(Constants.SLOW_SOUND);
         }
 
         public void Inverse()
@@ -349,12 +368,15 @@ namespace RainbowDragon.Core.Player
             if (inverseTimer == 0)
                 head.inversed = true;
             inverseTimer = 5;
+            mPlayer.PlaySound(Constants.REVERSE_SOUND);
         }
 
         public void Poison()
         {
+            poisonEngine.Emit();
             poisonTimer = 10;
             poiHitter = 1;
+            mPlayer.PlaySound(Constants.POI_SOUND);
         }
 
         public void ResetCapacity()
@@ -417,6 +439,7 @@ namespace RainbowDragon.Core.Player
             {
                 poisonTimer = 0;
                 poiHitter = 0;
+                poisonEngine.StopEmitting();
             }
             //Console.WriteLine("Poison Timer is: " + poisonTimer);
 

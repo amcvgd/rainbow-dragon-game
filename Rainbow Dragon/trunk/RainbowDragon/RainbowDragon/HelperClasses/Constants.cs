@@ -69,5 +69,25 @@ namespace RainbowDragon.HelperClasses
         public const string RAINBOW_CIRCLE = "rainbow_circle";
         public const string EFFECT_BASE_PATH = "Effects\\";
 
+        //Sounds
+        public const string MENU_MOVE = "menumove";
+        public const string MENU_SELECT = "menuselect";
+        public const string HIT_SOUND = "hit";
+        public const string CHARGE_SOUND = "charge";
+        public const string GET_SUN_SOUND = "getsun";
+        public const string SPEED_SOUND = "speed";
+        public const string REVERSE_SOUND = "reverse";
+        public const string INV_SOUND = "invincible";
+        public const string SLOW_SOUND = "slow";
+        public const string POI_SOUND = "poison";
+        public const string FIRE_SOUND = "fire";
+
+        //Songs
+        public const string TITLE_SONG = "dragontrack";
+        public const string IN_GAME_SONG = "dragontrack";
+
+        //Audio Base Paths
+        public const string SOUND_BASE_PATH = "Sounds\\";
+        public const string SONG_BASE_PATH = "Songs\\";
     }
 }
