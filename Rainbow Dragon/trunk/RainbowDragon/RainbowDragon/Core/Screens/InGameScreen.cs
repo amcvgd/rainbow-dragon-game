@@ -18,32 +18,30 @@ namespace RainbowDragon.Core.Screens
         Dragon mainPlayer;
         LevelManager levelManager;
         ContentLoader loader;
+        MusicPlayer mPlayer;
         GraphicsDevice graphics;
         Game1 game;
-        SpriteFont font;
         public InGameScreen(Game1 game1)
         {
-
             screenHeight = game1.Window.ClientBounds.Height;
             screenWidth = game1.Window.ClientBounds.Width;
             loader = new ContentLoader(game1);
+            mPlayer = new MusicPlayer(game1);
             graphics = game1.GraphicsDevice;
             game = game1;
         }
 
         public void Initialize()
         {
-            mainPlayer = new Dragon(3, loader);
-            levelManager = new LevelManager(loader,game);
+            mainPlayer = new Dragon(3, loader, mPlayer);
+            levelManager = new LevelManager(loader,game, mPlayer);
             levelManager.Initialize(screenWidth, screenHeight);
             mainPlayer.Initialize(new Vector2(screenWidth/2, screenHeight/2));
-            font = loader.AddFont("font");
         }
         public void Update(GameTime gameTime)
         {
             levelManager.Update(gameTime);
             mainPlayer.Update(gameTime);
-            
             levelManager.CheckForCollision(mainPlayer);
         }
 
@@ -51,7 +49,6 @@ namespace RainbowDragon.Core.Screens
         {
             spriteBatch.Begin();
             levelManager.Draw(spriteBatch);
-            spriteBatch.DrawString(font, "Rainbow Meter: " + mainPlayer.Meter + "/" + mainPlayer.MaxMeter, Vector2.Zero, Color.White);
             spriteBatch.End();
             mainPlayer.Draw(spriteBatch);
         }

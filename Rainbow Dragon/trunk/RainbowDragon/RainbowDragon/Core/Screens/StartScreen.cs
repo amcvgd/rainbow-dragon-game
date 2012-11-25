@@ -25,6 +25,7 @@ namespace RainbowDragon.Core.Screens
         bool titleIsShown = false;
         Dragon dragon;
         ContentLoader loader;
+        MusicPlayer mPlayer;
         Vector2 startPosition;
         Rectangle bgRectangle;
         int arrowState;
@@ -43,12 +44,14 @@ namespace RainbowDragon.Core.Screens
             exit = game.Content.Load<Texture2D>("Title\\exit");
             arrow = game.Content.Load<Texture2D>("Title\\arrow");
             loader = new ContentLoader(game);
-            dragon = new Dragon(3, loader);
+            mPlayer = new MusicPlayer(game);
+            dragon = new Dragon(3, loader, mPlayer);
             dragon.Initialize(new Vector2(scrWidth/2, scrHeight/2));
             bgRectangle = new Rectangle(scrWidth / 2 - titleTexture.Width / 2, scrHeight / 2 - titleTexture.Height / 2, titleTexture.Width, titleTexture.Height);
             startPosition.Y = bgRectangle.Bottom;
             startPosition.X = bgRectangle.Center.X - start.Width/2;
             arrowState = 0;
+            mPlayer.PlaySong(Constants.TITLE_SONG);
         }
 
         public void Update(GameTime gameTime)
@@ -66,15 +69,14 @@ namespace RainbowDragon.Core.Screens
                     arrowState--;
                     if (arrowState < 0)
                         arrowState = 2;
-
+                    mPlayer.PlaySound(Constants.MENU_MOVE);
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     arrowState++;
                     if (arrowState > 2)
                         arrowState = 0;
-
-                   
+                    mPlayer.PlaySound(Constants.MENU_MOVE);
                 }
 
                 timeElapsed = 0;
@@ -83,15 +85,18 @@ namespace RainbowDragon.Core.Screens
                 {
                     if (arrowState == 0)
                     {
+                        mPlayer.StopSong(); 
+                        mPlayer.PlaySound(Constants.MENU_SELECT);
                         game.ChangeState(Constants.GAME_STATE_INGAME);
                         game.InitializeScreen();
                     }
                     else if (arrowState == 1)
                     {
-
+                        mPlayer.PlaySound(Constants.MENU_SELECT);
                     }
                     else if (arrowState == 2)
                     {
+                        mPlayer.PlaySound(Constants.MENU_SELECT);
                         game.Exit();
 
                     }
