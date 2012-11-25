@@ -7,6 +7,7 @@ using RainbowDragon.Core.Pickups;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using RainbowDragon.HelperClasses;
+using Microsoft.Xna.Framework.Input;
 
 namespace RainbowDragon.Core.Levels
 {
@@ -31,6 +32,9 @@ namespace RainbowDragon.Core.Levels
         GraphicsDevice graphics;
         bool circleAdded = false;
         LevelManager manager;
+        bool isPaused = false;
+        RenderTarget2D pauseTexture;
+        
 
 
         public Level(ContentLoader contentLoader, GraphicsDevice graphs, LevelManager manager)
@@ -42,6 +46,7 @@ namespace RainbowDragon.Core.Levels
             graphics = graphs;
             circleTarget = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
             mainTarget = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
+            pauseTexture = new RenderTarget2D(graphs, graphics.PresentationParameters.BackBufferWidth, graphics.PresentationParameters.BackBufferHeight);
             toColorEffect = contentLoader.AddEffect("to_color_effect");
            // Messenger<int, Vector2>.AddListener("add circle", AddCircle);
             //AddCircle(10, new Vector2(300, 300));
@@ -62,6 +67,12 @@ namespace RainbowDragon.Core.Levels
 
         public void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                isPaused = true;
+
+            }
+
             foreach (Arrow arrow in arrows)
             {
 
@@ -101,13 +112,19 @@ namespace RainbowDragon.Core.Levels
             //spriteBatch.Draw(coloredBackground, backgroundRectangle, Color.White);
             spriteBatch.End();
 
-            graphics.SetRenderTarget(null);
+            if (!isPaused)
+            {
+                graphics.SetRenderTarget(null);
+            }
+            else
+            {
+                graphics.SetRenderTarget(pauseTexture);
+            }
             graphics.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             spriteBatch.Draw(coloredBackground, backgroundRectangle, Color.White);
             toColorEffect.Parameters["lightMask"].SetValue(circleTarget);
             toColorEffect.CurrentTechnique.Passes[0].Apply();
-            
             spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
             spriteBatch.End();
             spriteBatch.Begin();
@@ -131,10 +148,22 @@ namespace RainbowDragon.Core.Levels
                 circleAdded = false;
             }
 
+            
+            if (isPaused)
+            {
+                graphics.SetRenderTarget(null);
+                manager.PauseGame(pauseTexture);
+                
+            }
             //spriteBatch.Draw(loader.GetTexture(Constants.CHARGE_FIELD), new Vector2(300, 300), Color.White);
 
 
 
+        }
+
+        public void UnPause()
+        {
+            isPaused = false;
         }
 
         public void RemoveArrows()

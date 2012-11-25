@@ -56,5 +56,10 @@ namespace RainbowDragon.Core.Screens
             mainPlayer.Draw(spriteBatch);
         }
 
+
+        public void UnPauseLevel()
+        {
+            levelManager.UnPause();
+        }
     }
 }

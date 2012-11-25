@@ -28,6 +28,7 @@ namespace RainbowDragon
         InGameScreen inGameScreen;
         GameoverScreen gameOverScreen;
         LevelTransition transitionScreen;
+        PauseScreen pauseScreen;
         public int CurrentScreenWidth { get; set; }
         public int CurrentScreenHeight { get; set; }
 
@@ -56,12 +57,12 @@ namespace RainbowDragon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            setGameState(Constants.GAME_STATE_INGAME);
+            setGameState(Constants.GAME_STATE_START);
             inGameScreen = new InGameScreen(this);
-            startScreen = new StartScreen();
+            startScreen = new StartScreen(this);
             gameOverScreen = new GameoverScreen();
             
-            inGameScreen.Initialize();
+            //inGameScreen.Initialize();
             base.Initialize();
         }
 
@@ -116,6 +117,10 @@ namespace RainbowDragon
             {
                 transitionScreen.Update(gameTime);
             }
+            else if (currentGameState == Constants.GAME_STATE_PAUSE)
+            {
+                pauseScreen.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -147,6 +152,10 @@ namespace RainbowDragon
             {
                 transitionScreen.Draw(spriteBatch);
             }
+            else if (currentGameState == Constants.GAME_STATE_PAUSE)
+            {
+                pauseScreen.Draw(spriteBatch);
+            }
 
             base.Draw(gameTime);
             
@@ -161,6 +170,26 @@ namespace RainbowDragon
         {
             currentGameState = newState;
 
+        }
+        public void InitializeScreen()
+        {
+            if (currentGameState == Constants.GAME_STATE_INGAME)
+            {
+                inGameScreen = new InGameScreen(this);
+                inGameScreen.Initialize();
+            }
+        }
+
+        public void PauseGame(Texture2D texture)
+        {
+
+            pauseScreen = new PauseScreen(this, texture);
+            ChangeState(Constants.GAME_STATE_PAUSE);
+        }
+
+        public void UnPauseGame()
+        {
+            inGameScreen.UnPauseLevel();
         }
     }
 }

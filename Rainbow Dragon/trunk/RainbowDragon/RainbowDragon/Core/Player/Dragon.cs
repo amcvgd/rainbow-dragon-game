@@ -176,7 +176,7 @@ namespace RainbowDragon.Core.Player
         {
             GamePadState aGamePad = GamePad.GetState(PlayerIndex.One);
             KeyboardState aKeyboard = Keyboard.GetState();
-
+           
             //If we are currently charging...
             if (isCharging)
             {

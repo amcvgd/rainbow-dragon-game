@@ -369,5 +369,16 @@ namespace RainbowDragon.Core.Levels
         }
 
 
+        public void PauseGame(Texture2D texture)
+        {
+
+            game.PauseGame(texture);
+        }
+
+        public void UnPause()
+        {
+            currentLevel.UnPause();
+        }
+
     }
 }
