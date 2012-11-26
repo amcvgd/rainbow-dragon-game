@@ -10,6 +10,7 @@ using RainbowDragon.HelperClasses;
 using RainbowDragon.Core.Sprites;
 using RainbowDragon.Core.Player;
 using Microsoft.Xna.Framework.Graphics;
+using RainbowDragon.Core.Levels.Tutorials;
 namespace RainbowDragon.Core.Levels
 {
     class LevelManager
@@ -19,7 +20,7 @@ namespace RainbowDragon.Core.Levels
         int currentNumberArrows;
         int maxTime;
         List<Level> levels;
-        Level currentLevel;
+        public Level currentLevel;
         ContentLoader contentLoader;
         MusicPlayer musicPlayer;
         int screenWidth;
@@ -27,6 +28,7 @@ namespace RainbowDragon.Core.Levels
         Game1 game;
         float xRatio;
         float yRatio;
+        
         public LevelManager(ContentLoader loader, Game1 game, MusicPlayer mPlayer)
         {
 
@@ -135,6 +137,70 @@ namespace RainbowDragon.Core.Levels
 
                 }
 
+
+                foreach (XElement tutorial in level.Descendants("tutorial"))
+                {
+                    if (tutorial.Element("type").Value == Constants.KEY_PRESS_TUTORIAL)
+                    {
+                        KeyPressTutorial tut = new KeyPressTutorial(newLevel, contentLoader.AddFont("chineseFontSmall"), new Vector2(screenWidth , screenHeight / 2), contentLoader.AddTexture2("tutorial_bg", "Levels\\tutorial_bg"));
+                        tut.Text = tutorial.Element("text").Value;
+                        foreach (XElement key in tutorial.Descendants("key"))
+                        {
+                            if(key.Value == "left")
+                            {
+                                tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Left);
+                            }
+                            else if (key.Value == "right")
+                            {
+                                tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Right);
+                            }
+                            else if (key.Value == "up")
+                            {
+                                tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Up);
+                            }
+                            else if (key.Value == "down")
+                            {
+                                tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Down);
+                            }
+                            else if (key.Value == "space")
+                            {
+                                tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Space);
+                            }
+                            else if (key.Value == "escape")
+                            {
+                                tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Escape);
+                            }
+                            
+                        }
+                        tut.type = Constants.KEY_PRESS_TUTORIAL;
+                        newLevel.tutorials.Add(tut);
+                        
+
+                    }
+                    else if (tutorial.Element("type").Value == Constants.TIMER_TUTORIAL)
+                    {
+                        TimerTutorial tut = new TimerTutorial(newLevel, contentLoader.AddFont("chineseFontSmall"), new Vector2(screenWidth, screenHeight / 2), contentLoader.AddTexture2("tutorial_bg", "Levels\\tutorial_bg"));
+                        tut.Text = tutorial.Element("text").Value;
+                        tut.maxTime = Convert.ToInt32( tutorial.Element("time").Value);
+                        tut.type = Constants.TIMER_TUTORIAL;
+                        newLevel.tutorials.Add(tut);
+
+                    }
+                    else if (tutorial.Element("type").Value == Constants.COLLISION_TUTORIAL)
+                    {
+
+                        CollisionTutorial tut = new CollisionTutorial(newLevel, contentLoader.AddFont("chineseFontSmall"), new Vector2(screenWidth, screenHeight / 2), contentLoader.AddTexture2("tutorial_bg", "Levels\\tutorial_bg"));
+                        tut.Text = tutorial.Element("text").Value;
+                        tut.target = tutorial.Element("target").Value;
+                        tut.type = Constants.COLLISION_TUTORIAL;
+                        newLevel.tutorials.Add(tut);
+                    }
+
+
+
+
+
+                }
                 string back = level.Element("background").Value;
                 newLevel.ColoredBackgroud = contentLoader.AddTexture2(back, Constants.BACKGROUND_BASE_PATH + back);
                 newLevel.BWBackgroud = contentLoader.AddTexture2("bw_" + back, Constants.BACKGROUND_BASE_PATH + "bw_" + back);
@@ -295,6 +361,13 @@ namespace RainbowDragon.Core.Levels
                             else
                             {
                                 player.AddToRainbowMeter(5 * sun.Size);      //The size is taken into account when adding to the meter
+                                if (currentLevel.currentTutorial != null)
+                                {
+                                    if (currentLevel.currentTutorial.type == Constants.COLLISION_TUTORIAL)
+                                    {
+                                        ((CollisionTutorial)currentLevel.currentTutorial).CheckForCollision("Sun");
+                                    }
+                                }
                             }
                             sun.DisappearSun();
                         }

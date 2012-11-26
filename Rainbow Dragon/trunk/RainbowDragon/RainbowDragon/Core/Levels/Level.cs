@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using RainbowDragon.HelperClasses;
 using Microsoft.Xna.Framework.Input;
+using RainbowDragon.Core.Levels.Tutorials;
 
 namespace RainbowDragon.Core.Levels
 {
@@ -35,6 +36,11 @@ namespace RainbowDragon.Core.Levels
         LevelManager manager;
         bool isPaused = false;
         RenderTarget2D pauseTexture;
+        public List<BaseTutorial> tutorials {get; set;}
+        public BaseTutorial currentTutorial;
+        int timeToChangeTutorial = 3000;
+        int timeElapsedForTutorial;
+        bool readyToChangeTutorial = false;
         
 
 
@@ -54,13 +60,19 @@ namespace RainbowDragon.Core.Levels
             //AddCircle(10, new Vector2(300, 300));
             deadArrows = new List<Arrow>();
             this.manager = manager;
-
+            tutorials = new List<BaseTutorial>();
+            
+                 
         }
 
         public void Initialize()
         {
             Messenger<int, Vector2>.AddListener("add circle", AddCircle);
             mPlayer.PlaySong(Constants.IN_GAME_SONG);
+            if (tutorials.Count != 0)
+                currentTutorial = tutorials.ElementAt(0);
+            else
+                currentTutorial = null;
         }
 
         public void Kill()
@@ -91,6 +103,25 @@ namespace RainbowDragon.Core.Levels
 
             if (!isPaused && !mPlayer.IsSongPlaying())
                 mPlayer.ResumeSong();
+
+            if (currentTutorial != null)
+            {
+                if (readyToChangeTutorial)
+                {
+                    timeElapsedForTutorial -= gameTime.ElapsedGameTime.Milliseconds;
+                    if (timeElapsedForTutorial <= 0)
+                    {
+                        ChangeTutorial();
+                        readyToChangeTutorial = false;
+                    }
+                }
+
+
+                if (!currentTutorial.isTutorialCompleted)
+                    currentTutorial.Update(gameTime);
+            }
+
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -162,7 +193,13 @@ namespace RainbowDragon.Core.Levels
                 manager.PauseGame(pauseTexture);
                 
             }
-            //spriteBatch.Draw(loader.GetTexture(Constants.CHARGE_FIELD), new Vector2(300, 300), Color.White);
+
+            if (currentTutorial != null)
+            {
+                if (!currentTutorial.isTutorialCompleted)
+                    currentTutorial.Draw(spriteBatch);
+                //spriteBatch.Draw(loader.GetTexture(Constants.CHARGE_FIELD), new Vector2(300, 300), Color.White);
+            }
 
 
 
@@ -212,6 +249,20 @@ namespace RainbowDragon.Core.Levels
             newcircle.Initialize(loader.GetTexture(Constants.CHARGE_FIELD), new Rectangle((int)position.X - radius/2, (int)position.Y-radius/2, radius, radius));
             circles.Add(newcircle);
             circleAdded = true;
+        }
+
+        public void ChangeTutorial()
+        {
+            if (tutorials.IndexOf(currentTutorial) + 1 < tutorials.Count)
+                currentTutorial = tutorials.ElementAt(tutorials.IndexOf(currentTutorial) + 1);
+        }
+
+        public void NextTutorial()
+        {
+            
+            readyToChangeTutorial = true;
+            timeElapsedForTutorial = timeToChangeTutorial;
+            
         }
 
 
