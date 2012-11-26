@@ -89,5 +89,12 @@ namespace RainbowDragon.HelperClasses
         //Audio Base Paths
         public const string SOUND_BASE_PATH = "Sounds\\";
         public const string SONG_BASE_PATH = "Songs\\";
+
+        //Tutorials
+        public const string TIMER_TUTORIAL = "timer_tutorial";
+        public const string KEY_PRESS_TUTORIAL = "key_press_tutorial";
+        public const string COLLISION_TUTORIAL = "collision_tutorial";
+
+
     }
 }

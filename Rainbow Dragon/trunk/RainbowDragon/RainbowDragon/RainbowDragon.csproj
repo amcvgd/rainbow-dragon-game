@@ -119,6 +119,10 @@
     <Compile Include="Core\Levels\Circle.cs" />
     <Compile Include="Core\Levels\Level.cs" />
     <Compile Include="Core\Levels\LevelManager.cs" />
+    <Compile Include="Core\Levels\Tutorials\BaseTutorial.cs" />
+    <Compile Include="Core\Levels\Tutorials\CollisionTutorial.cs" />
+    <Compile Include="Core\Levels\Tutorials\KeyPressTutorial.cs" />
+    <Compile Include="Core\Levels\Tutorials\TimerTutorial.cs" />
     <Compile Include="Core\ParticleEngine\Particle.cs" />
     <Compile Include="Core\ParticleEngine\ParticleEngine.cs" />
     <Compile Include="Core\Pickups\AcceleratingSun.cs" />

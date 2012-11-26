@@ -40,9 +40,25 @@ namespace RainbowDragon.Core.Screens
         }
         public void Update(GameTime gameTime)
         {
-            levelManager.Update(gameTime);
-            mainPlayer.Update(gameTime);
-            levelManager.CheckForCollision(mainPlayer);
+            if (levelManager.currentLevel.currentTutorial != null)
+            {
+                if (levelManager.currentLevel.currentTutorial.isTutorialCompleted || levelManager.currentLevel.currentTutorial.type != Constants.KEY_PRESS_TUTORIAL)
+                {
+                    levelManager.Update(gameTime);
+                    mainPlayer.Update(gameTime);
+                    levelManager.CheckForCollision(mainPlayer);
+                }
+                else
+                {
+                    levelManager.currentLevel.currentTutorial.Update(gameTime);
+                }
+            }
+            else
+            {
+                levelManager.Update(gameTime);
+                mainPlayer.Update(gameTime);
+                levelManager.CheckForCollision(mainPlayer);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
