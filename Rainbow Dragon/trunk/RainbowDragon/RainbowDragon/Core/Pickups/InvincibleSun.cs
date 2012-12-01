@@ -24,6 +24,8 @@ namespace RainbowDragon.Core.Pickups
             }
                 if (currentColor >= colors.Length)
                 currentColor = 0;
+
+            CheckEye(gameTime);
             base.Update(gameTime);
         }
     }

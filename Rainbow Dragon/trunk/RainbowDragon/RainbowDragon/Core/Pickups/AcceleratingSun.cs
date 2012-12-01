@@ -22,6 +22,7 @@ namespace RainbowDragon.Core.Pickups
                 rotation += MathHelper.ToRadians(5);
             }
             //base.Update(gameTime);
+            CheckEye(gameTime);
         }
     }
 }

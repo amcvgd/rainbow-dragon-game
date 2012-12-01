@@ -56,7 +56,7 @@
       <tutorial>
         <text>The red arrows steal some of your rainbow. Don't touch them!</text>
         <type>timer_tutorial</type>
-        <time>7000</time>
+        <time>10000</time>
       </tutorial>
       <tutorial>
         <text>One last thing, press ESC to pause the game.</text>
@@ -70,45 +70,99 @@
       
     </tutorials>
   </level>
-
   <level>
     <number>2</number>
     <arrows>
       <arrow >
         <type>normal_arrow</type>
-        <xposition>17</xposition>
-        <yposition>1</yposition>
-        <direction>180</direction>
-        <speed>1</speed>
+        <xposition>2</xposition>
+        <yposition>-1</yposition>
+        <direction>90</direction>
+        <speed>3</speed>
       </arrow>
       <arrow >
         <type>normal_arrow</type>
-        <xposition>3</xposition>
-        <yposition>-1</yposition>
-        <direction>60</direction>
-        <speed>2</speed>
-      </arrow>
-      <arrow >
-        <type>poison_arrow</type>
-        <xposition>7</xposition>
-        <yposition>-1</yposition>
-        <direction>120</direction>
-        <speed>1</speed>
-      </arrow>
-      <arrow >
-        <type>inverse_arrow</type>
-        <xposition>-1</xposition>
-        <yposition>4</yposition>
-        <direction>0</direction>
-        <speed>2</speed>
-      </arrow>
-      <arrow >
-        <type>poison_arrow</type>
-        <xposition>7</xposition>
+        <xposition>6</xposition>
         <yposition>10</yposition>
-        <direction>280</direction>
+        <direction>270</direction>
+        <speed>3</speed>
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>10</xposition>
+        <yposition>-1</yposition>
+        <direction>90</direction>
+        <speed>3</speed>
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>14</xposition>
+        <yposition>10</yposition>
+        <direction>270</direction>
+        <speed>3</speed>      
+      </arrow>
+    </arrows>
+    <suns>
+      <sun>
+        <size>2</size>
+        <type>normal_sun</type>
+        <xposition>4</xposition>
+        <yposition>5</yposition>
+      </sun>
+      <sun>
+        <size>2</size>
+        <type>normal_sun</type>
+        <xposition>8</xposition>
+        <yposition>5</yposition>
+      </sun>
+      <sun>
+        <size>2</size>
+        <type>normal_sun</type>
+        <xposition>12</xposition>
+        <yposition>5</yposition>
+      </sun>
+    </suns>
+    <time>5</time>
+    <playerX>13</playerX>
+    <playerY>5</playerY>
+    
+    <background>flowerfield</background>
+  </level>
+  <level>
+    <number>3</number>
+    <arrows>
+      
+       
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>5</xposition>
+        <yposition>-1</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>-1</xposition>
+        <yposition>3</yposition>
+        <direction>0</direction>
         <speed>5</speed>
       </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>10</xposition>
+        <yposition>-1</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>16</xposition>
+        <yposition>8</yposition>
+        <direction>180</direction>
+        <speed>5</speed>
+      </arrow>
+      
 
 
     </arrows>
@@ -116,25 +170,196 @@
       <sun>
         <size>1</size>
         <type>normal_sun</type>
-        <xposition>1</xposition>
-        <yposition>3</yposition>
+        <xposition>6</xposition>
+        <yposition>4</yposition>
       </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>7</xposition>
+        <yposition>4</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>8</xposition>
+        <yposition>4</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>9</xposition>
+        <yposition>4</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>6</xposition>
+        <yposition>5</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>7</xposition>
+        <yposition>5</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>8</xposition>
+        <yposition>5</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>9</xposition>
+        <yposition>5</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>6</xposition>
+        <yposition>6</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>7</xposition>
+        <yposition>6</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>8</xposition>
+        <yposition>6</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>9</xposition>
+        <yposition>6</yposition>
+        
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>6</xposition>
+        <yposition>7</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>7</xposition>
+        <yposition>7</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>8</xposition>
+        <yposition>7</yposition>
+      </sun>
+      <sun>
+        <size>1</size>
+        <type>normal_sun</type>
+        <xposition>9</xposition>
+        <yposition>7</yposition>
+      </sun>
+      
+
+    </suns>
+    <time>5</time>
+    <playerX>0</playerX>
+    <playerY>0</playerY>
+    <background>flowerfield</background>
+  </level>
+  <level>
+    <number>4</number>
+    <arrows>
+      <arrow >
+        <type>slow_arrow</type>
+        <xposition>1</xposition>
+        <yposition>-1</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+      </arrow>
+      <arrow >
+        <type>slow_arrow</type>
+        <xposition>2</xposition>
+        <yposition>-2</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+      </arrow>
+      <arrow >
+        <type>slow_arrow</type>
+        <xposition>3</xposition>
+        <yposition>-3</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>5</xposition>
+        <yposition>-4</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>6</xposition>
+        <yposition>-5</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+      </arrow>
+      <arrow >
+        <type>normal_arrow</type>
+        <xposition>7</xposition>
+        <yposition>-6</yposition>
+        <direction>90</direction>
+        <speed>5</speed>
+      </arrow>
+
+
+    </arrows>
+    <suns>
       <sun>
         <size>2</size>
         <type>normal_sun</type>
         <xposition>4</xposition>
-        <yposition>8</yposition>
+        <yposition>5</yposition>
       </sun>
       <sun>
-        <size>3</size>
-        <type>normal_sun</type>
-        <xposition>10</xposition>
-        <yposition>6</yposition>
+        <size>2</size>
+        <type>accelerating_sun</type>
+        <xposition>15</xposition>
+        <yposition>5</yposition>
       </sun>
-
-
     </suns>
     <time>5</time>
+    <playerX>13</playerX>
+    <playerY>5</playerY>
+    <tutorials>
+      <tutorial>
+        <type>key_press_tutorial</type>
+        <text>The orange suns that spin faster will make you go faster for a short time. Press enter key to start</text>
+        <keys>
+          <key>enter</key>
+
+        </keys>
+      </tutorial>
+      <tutorial>
+        <type>key_press_tutorial</type>
+        <text>The blue arrows will slow you down. Press enter to continue</text>
+        <keys>
+          <key>enter</key>
+
+        </keys>
+      </tutorial>
+
+
+    </tutorials>
+
+
     <background>flowerfield</background>
   </level>
 

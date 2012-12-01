@@ -7,6 +7,7 @@ namespace RainbowDragon.HelperClasses
 {
     class Constants
     {
+       
         public const int GAME_STATE_START = 0;
 
         public const int GAME_STATE_INGAME = 1;
