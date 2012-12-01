@@ -34,9 +34,9 @@ namespace RainbowDragon.Core.Screens
         public void Initialize()
         {
             mainPlayer = new Dragon(3, loader, mPlayer);
-            levelManager = new LevelManager(loader,game, mPlayer);
+            levelManager = new LevelManager(loader,game, mPlayer,this);
             levelManager.Initialize(screenWidth, screenHeight);
-            mainPlayer.Initialize(new Vector2(screenWidth/2, screenHeight/2));
+            //mainPlayer.Initialize(new Vector2(screenWidth/2, screenHeight/2));
         }
         public void Update(GameTime gameTime)
         {
@@ -74,5 +74,12 @@ namespace RainbowDragon.Core.Screens
         {
             levelManager.UnPause();
         }
+
+        public void RestartPlayer(Vector2 pos)
+        {
+            mainPlayer = new Dragon(3, loader, mPlayer);
+            mainPlayer.Initialize(pos);
+        }
+
     }
 }

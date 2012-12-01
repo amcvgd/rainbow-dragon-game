@@ -41,6 +41,7 @@ namespace RainbowDragon.Core.Levels
         int timeToChangeTutorial = 3000;
         int timeElapsedForTutorial;
         bool readyToChangeTutorial = false;
+        public Vector2 playerPosition {get; set;}
         
 
 

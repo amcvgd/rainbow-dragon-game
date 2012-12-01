@@ -11,6 +11,7 @@ using RainbowDragon.Core.Sprites;
 using RainbowDragon.Core.Player;
 using Microsoft.Xna.Framework.Graphics;
 using RainbowDragon.Core.Levels.Tutorials;
+using RainbowDragon.Core.Screens;
 namespace RainbowDragon.Core.Levels
 {
     class LevelManager
@@ -28,13 +29,15 @@ namespace RainbowDragon.Core.Levels
         Game1 game;
         float xRatio;
         float yRatio;
+        InGameScreen screen;
         
-        public LevelManager(ContentLoader loader, Game1 game, MusicPlayer mPlayer)
+        public LevelManager(ContentLoader loader, Game1 game, MusicPlayer mPlayer, InGameScreen screen)
         {
 
             contentLoader = loader;
             this.game = game;
             musicPlayer = mPlayer;
+            this.screen = screen;
 
         }
 
@@ -50,6 +53,8 @@ namespace RainbowDragon.Core.Levels
             System.IO.Stream stream = TitleContainer.OpenStream("Content\\Core\\levels.xml");
             XDocument doc = XDocument.Load(stream);
             levels = new List<Level>();
+
+            Random rand = new Random();
 
             foreach (XElement level in doc.Descendants("level"))
             {
@@ -89,6 +94,10 @@ namespace RainbowDragon.Core.Levels
                     newSun.Position = new Vector2(Convert.ToSingle(sun.Element("xposition").Value) * xRatio, Convert.ToSingle(sun.Element("yposition").Value) * yRatio);
                     newSun.Size = Convert.ToInt32(sun.Element("size").Value);
                     newSun.Source = new Rectangle((int)newSun.position.X, (int)newSun.position.Y, newSun.Size * 100, newSun.Size * 100);
+                    newSun.InitializeTextures(contentLoader.AddTexture2("pupil", "Pickups\\pupil"), contentLoader.AddTexture2("eyelid", "Pickups\\eyelid"),
+                        contentLoader.AddTexture2("eyelid_closed", "Pickups\\eyelid_closed"),contentLoader.AddTexture2("eye_base", "Pickups\\eye_base"),
+                        contentLoader.AddTexture2("zzz", "Pickups\\zzz"));
+                    newSun.rand = rand;
                     newLevel.suns.Add(newSun);
 
                 }
@@ -170,6 +179,11 @@ namespace RainbowDragon.Core.Levels
                             {
                                 tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Escape);
                             }
+                            else if (key.Value == "enter")
+                            {
+                                tut.keys.Add(Microsoft.Xna.Framework.Input.Keys.Enter);
+                            }
+
                             
                         }
                         tut.type = Constants.KEY_PRESS_TUTORIAL;
@@ -205,15 +219,24 @@ namespace RainbowDragon.Core.Levels
                 newLevel.ColoredBackgroud = contentLoader.AddTexture2(back, Constants.BACKGROUND_BASE_PATH + back);
                 newLevel.BWBackgroud = contentLoader.AddTexture2("bw_" + back, Constants.BACKGROUND_BASE_PATH + "bw_" + back);
                 newLevel.BackgroundRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
+                if (level.Element("playerX") != null && level.Element("playerY") != null)
+                {
+                    newLevel.playerPosition = new Vector2(Convert.ToSingle(level.Element("playerX").Value)*xRatio, Convert.ToSingle(level.Element("playerY").Value)*yRatio);
+                }
+                else
+                {
+                    newLevel.playerPosition = new Vector2(screenWidth / 2, screenHeight / 2);
+                }
+
                 levels.Add(newLevel);
                 
-
             }
 
 
             currentLevel = GetCurrentLevel();
             currentLevel.Initialize();
             game.StartTransition(currentLevelNumber);
+            screen.RestartPlayer(currentLevel.playerPosition);
             #region Old Version XML parser
             /*
             levels = (from level in doc.Descendants("level")
@@ -335,11 +358,18 @@ namespace RainbowDragon.Core.Levels
                 currentLevel = GetCurrentLevel();
                 currentLevel.Initialize();
                 game.StartTransition(currentLevelNumber);
+                screen.RestartPlayer(currentLevel.playerPosition);
+                
             }
         }
 
         public void CheckForCollision(Dragon player)
         {
+            foreach (Sun sun in currentLevel.suns)
+            {
+                sun.UpdatePlayerPosition(player.head.position);
+            }
+            
             //Check each part of the dragon
             foreach (DragonPart part in player.dragon)
             {
@@ -453,6 +483,8 @@ namespace RainbowDragon.Core.Levels
         {
             currentLevel.UnPause();
         }
+
+        
 
     }
 }
