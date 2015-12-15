@@ -1,0 +1,1 @@
+Color has been drained from this world by the black & white archers.  The player must control a dragon to collect suns and bring color back to the world.
